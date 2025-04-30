@@ -38,8 +38,8 @@ public static class ProductsMapper {
   public static Dal::Candy ToDal(this Bll::Candy candy) => new Dal::Candy
   { Id = candy.Id
   , Name = candy.Name
-  , Brand = candy.Brand.ToBll()
-  , Category = candy.Category.ToBll()
+  , Brand = candy.Brand.ToDal()
+  , Category = candy.Category.ToDal()
   , PriceBeforeTax = candy.PriceBeforeTax
   };
 
