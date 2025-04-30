@@ -8,14 +8,12 @@ using Candy.Tools;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Oapi = Microsoft.OpenApi.Models;
 
+using Oapi = Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+//builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c => {
   // Définir les information générales de notre API dans swagger
@@ -49,10 +47,10 @@ builder.Services.AddSwaggerGen(c => {
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddDbContext<CandyDbContext>(options =>
-  options.UseSqlServer(builder.Configuration.GetConnectionString("default")));
+  options.UseSqlServer(builder.Configuration.GetConnectionString("default"))
+);
 
 builder.Services.AddSingleton<TokenManager>();
-
 // Configuration de l'authentification JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
   .AddJwtBearer(options =>
@@ -82,6 +80,6 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers();
+//app.MapControllers();
 
 app.Run();

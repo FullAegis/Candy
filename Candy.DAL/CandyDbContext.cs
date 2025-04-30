@@ -8,10 +8,23 @@ public class CandyDbContext : DbContext {
   
   public CandyDbContext(CandyDbCtxOpts options)
     : base(options)
-  => Database.EnsureCreated();
+  {
+    Database.EnsureCreated(); 
+  }
 
   protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-    optionsBuilder.UseSqlServer(@"");
+    if (optionsBuilder.IsConfigured is false)
+      optionsBuilder.UseSqlServer(
+        """
+        Data Source=PC-BSTORM\MSSQLSERVER01;
+        Initial Catalog=BookManager;
+        Integrated Security=True;
+        Connect Timeout=30;
+        Encrypt=True;
+        Trust Server Certificate=True;
+        Application Intent=ReadWrite;
+        Multi Subnet Failover=False
+        """);
   }
 
   protected override void OnModelCreating(ModelBuilder modelBuilder) {

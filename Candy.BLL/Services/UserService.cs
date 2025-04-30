@@ -7,10 +7,13 @@ namespace Candy.BLL.Services {
 using Bll = Candy.BLL.Models;
 using BCrypt = BCrypt.Net.BCrypt;
 
-public class UserService(IUserRepository repository) : IUserService {
-  private readonly IUserRepository _users = repository;
+public class UserService : IUserService {
+  private readonly IUserRepository _users;
 
-
+  public UserService(in IUserRepository users) {
+    _users = users;
+  }
+  
   public Bll::User Login(in string email, in string password) {
     try {
       var hash = _users.GetPassword(email);

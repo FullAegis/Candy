@@ -3,7 +3,7 @@ using Candy.DAL.Models;
 namespace Candy.DAL.Repositories {
 using Candy.DAL.Interfaces;
   
-public class UserRepository(in CandyDbContext context) : IUserRepository {
+public class UserRepository(CandyDbContext context) : IUserRepository {
   private readonly CandyDbContext _context = context;
   
   public void Register(in User user) =>  _context.Users.Add(user);
