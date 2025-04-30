@@ -42,10 +42,5 @@ public static class ProductsMapper {
   , Category = candy.Category.ToDal()
   , PriceBeforeTax = candy.PriceBeforeTax
   };
-
-
-  
-
-
 #endregion
 };
