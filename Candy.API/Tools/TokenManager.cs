@@ -4,12 +4,19 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Candy.Tools {
-  public class TokenManager(in IConfiguration config) {
-    private readonly IConfiguration _config = config;
-    private readonly string _secret = config["jwt:key"];
-    private readonly string _issuer = config["jwt:issuer"];
-    private readonly string _audience = config["jwt:audience"];
+  public class TokenManager {
+    private readonly IConfiguration _config;
+    private readonly string _secret;
+    private readonly string _issuer;
+    private readonly string _audience;
 
+    public TokenManager(IConfiguration config) {
+      _config = config;
+      _secret = _config["jwt:key"];
+      _issuer = config["jwt:issuer"];
+      _audience = config["jwt:audience"];
+    }
+    
     public string GenerateJwt(dynamic user, int expirationDate = 1) {
       var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secret));
       var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha512);
@@ -17,8 +24,8 @@ namespace Candy.Tools {
       var now = DateTime.Now;
       var myclaims = new Claim[] {
         new(ClaimTypes.Sid, user.Id.ToString())
-      , new Claim(ClaimTypes.GivenName, user.Nom ?? "NomInconnu")
-      , new Claim(ClaimTypes.Expiration, now.AddHours(expirationDate).ToString(), ClaimValueTypes.DateTime)
+      , new(ClaimTypes.GivenName, user.Nom ?? "NomInconnu")
+      , new(ClaimTypes.Expiration, now.AddHours(expirationDate).ToString(), ClaimValueTypes.DateTime)
       };
 
       var token = new JwtSecurityToken( claims:             myclaims            
