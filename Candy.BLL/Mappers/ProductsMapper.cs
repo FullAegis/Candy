@@ -5,26 +5,18 @@ using Dal = Candy.DAL.Models.Products;
 
 public static class ProductsMapper {
 #region Brand
-  public static Bll::Brand ToBll(this Dal::Brand brand) => new Bll::Brand
-  { Id = brand.Id
-  , Name = brand.Name
-  };
+  public static Bll::Brand ToBll(this Dal::Brand brand)
+  => new Bll::Brand { Id = brand.Id, Name = brand.Name };
   
-  public static Dal::Brand ToDal(this Bll::Brand brand) => new Dal::Brand
-  { Id = brand.Id
-  , Name = brand.Name 
-  };
+  public static Dal::Brand ToDal(this Bll::Brand brand)
+  => new Dal::Brand { Id = brand.Id, Name = brand.Name };
 #endregion
 #region Category
-  public static Bll::Category ToBll(this Dal::Category category) => new Bll::Category
-  { Id = category.Id
-  , Name = category.Name
-  };
+  public static Bll::Category ToBll(this Dal::Category category)
+  => new Bll::Category { Id = category.Id, Name = category.Name };
   
-  public static Dal::Category ToDal(this Bll::Category category) => new Dal::Category
-  { Id = category.Id
-  , Name = category.Name
-  };
+  public static Dal::Category ToDal(this Bll::Category category)
+  => new Dal::Category { Id = category.Id, Name = category.Name };
 #endregion
 #region Candy
   public static Bll::Candy ToBll(this Dal::Candy candy) => new Bll::Candy
