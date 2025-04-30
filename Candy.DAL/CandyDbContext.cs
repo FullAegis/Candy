@@ -1,16 +1,20 @@
-﻿using Candy.DAL.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+
+using Candy.DAL.Models;
+using Candy.DAL.Models.Products;
 
 namespace Candy.DAL {
 using CandyDbCtxOpts = DbContextOptions<CandyDbContext>;
+using Candy = Models.Products.Candy;
+
 public class CandyDbContext : DbContext {
   public DbSet<User> Users { get => Set<User>(); }
+  public DbSet<Brand> Brands { get => Set<Brand>(); }
+  public DbSet<Candy> Candies { get => Set<Candy>(); }
   
   public CandyDbContext(CandyDbCtxOpts options)
     : base(options)
-  {
-    Database.EnsureCreated(); 
-  }
+  => Database.EnsureCreated(); 
 
   protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
     if (optionsBuilder.IsConfigured is false)
