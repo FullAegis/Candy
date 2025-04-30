@@ -13,7 +13,7 @@ using Oapi = Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-//builder.Services.AddControllers();
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c => {
   // Définir les information générales de notre API dans swagger
@@ -80,6 +80,6 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-//app.MapControllers();
+app.MapControllers();
 
 app.Run();
