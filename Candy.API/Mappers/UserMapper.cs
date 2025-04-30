@@ -1,0 +1,23 @@
+namespace Candy.Mappers {
+using Bll = Candy.BLL.Models;
+using Api = Candy.API.Models.DTO;
+using BCrypt = BCrypt.Net.BCrypt;
+
+public static class UserMapper {
+  public static Api::User ToApi(in Bll::User user) => new Api::User
+  { Id = user.Id
+  , FirstName = user.FirstName
+  , LastName = user.LastName
+  , Email =  user.Email
+  };
+  
+  public static Bll::User ToBll(this Api::User user, in string password) => new Bll::User
+  { Id = user.Id
+  , FirstName = user.FirstName
+  , LastName = user.LastName
+  , Email = user.Email
+  , Password = BCrypt.HashPassword(password)
+  };
+  
+};
+}
