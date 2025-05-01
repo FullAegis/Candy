@@ -1,5 +1,5 @@
-using Candy.DAL.Interfaces.Products;
-using Candy.DAL.Models.Products; // IBrandRepository
+using Candy.DAL.Interfaces.Products; // IBrandRepository
+using Candy.DAL.Models.Products;
 
 namespace Candy.DAL.Repositories.Products;
 
