@@ -1,0 +1,88 @@
+@startuml
+' Set direction for the diagram
+left to right direction
+
+title Data Access Layer (DAL)
+
+' Include necessary Entities for context
+package "01. Entities (Partial)" {
+    class Brand { }
+    class Category { }
+    class Candy { }
+    class User { }
+    class Order { }
+    class OrderItem { }
+}
+
+package "02. DAL (Data Access Layer)" {
+    class CandyDbContext {
+        + DbSet<Brand> Brands
+        + DbSet<Category> Categories
+        + DbSet<Candy> Candies
+        + DbSet<User> Users
+        + DbSet<Order> Orders
+        + DbSet<OrderItem> OrderItems
+        -- Constructors --
+        + CandyDbContext(DbContextOptions<CandyDbContext> options)
+        -- Methods --
+        # void OnModelCreating(ModelBuilder modelBuilder)
+    }
+
+    interface IRepository<T> {
+        + Task<T> GetByIdAsync(int id)
+        + Task<IEnumerable<T>> GetAllAsync()
+        + Task<T> AddAsync(T entity)
+        + Task UpdateAsync(T entity)
+        + Task DeleteAsync(int id)
+    }
+
+    interface ICandyRepository {
+        ICandyRepository <|-- IRepository<Candy>
+        + Task<IEnumerable<Candy>> GetByCategoryIdAsync(int categoryId)
+        + Task<IEnumerable<Candy>> GetAllWithDetailsAsync()
+        + Task<Candy> GetByIdWithDetailsAsync(int id)
+    }
+
+    class CandyRepository {
+        + CandyRepository(CandyDbContext context)
+        ' Implements ICandyRepository methods
+    }
+    CandyRepository .up.|> ICandyRepository
+    CandyRepository --> CandyDbContext : uses
+
+    interface IUserRepository {
+         IUserRepository <|-- IRepository<User>
+        + Task<User> GetByUsernameAsync(string username)
+        + Task<User> GetUserOrdersAsync(int userId)
+        + Task<User> GetByIdAsync(int userId)
+    }
+
+     class UserRepository {
+        + UserRepository(CandyDbContext context)
+        ' Implements IUserRepository methods
+    }
+    UserRepository .up.|> IUserRepository
+    UserRepository --> CandyDbContext : uses
+
+     interface IOrderRepository {
+         IOrderRepository <|-- IRepository<Order>
+         + Task<IEnumerable<Order>> GetUserOrdersAsync(int userId)
+         + Task AddOrderAsync(Order order)
+         + Task<Order> GetOrderByIdWithDetailsAsync(int orderId)
+     }
+
+     class OrderRepository {
+        + OrderRepository(CandyDbContext context)
+        ' Implements IOrderRepository methods
+     }
+     OrderRepository .up.|> IOrderRepository
+     OrderRepository --> CandyDbContext : uses
+
+}
+' Dependencies of DAL classes on Entities (mostly via DbSet and method signatures)
+CandyRepository ..> Candy
+UserRepository ..> User
+OrderRepository ..> Order
+OrderRepository ..> OrderItem
+
+@enduml

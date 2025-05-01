@@ -1,0 +1,116 @@
+@startuml
+' Set direction for the diagram
+left to right direction
+
+title Business Logic Layer (BLL)
+
+' Include necessary elements from other layers for context
+package "02. DAL (Interfaces Partial)" {
+    interface IRepository<T> { }
+    interface ICandyRepository {
+    ICandyRepository <|-- IRepository<Candy> }
+    interface IUserRepository { IUserRepository <|-- IRepository<User> }
+    interface IOrderRepository { IOrderRepository <|-- IRepository<Order> }
+}
+
+package "06. Cross-Cutting Concerns (Interfaces Partial)" {
+    interface IJwtService { }
+    interface ITaxService { }
+}
+
+package "05. DTOs (Partial)" {
+    class AddCandyRequestDto { }
+    class UpdateCandyRequestDto { }
+    class CandyResponseDto { }
+    class RegisterUserDto { }
+    class LoginRequestDto { }
+    class AuthResponseDto { }
+    class UserResponseDto { }
+    class UpdateUserDto { }
+    class PlaceOrderRequestDto { }
+    class OrderResponseDto { }
+    class OrderHistoryItemDto { }
+    class Brand { } 
+    ' Needed for IRepository<Brand> dependency
+    class Category { } 
+    ' Needed for IRepository<Category> dependency
+    class Candy { } 
+    ' Needed for IRepository<Candy> dependency
+    class User { } 
+    ' Needed for IRepository<User> dependency, IJwtService
+    class Order { } 
+    ' Needed for IRepository<Order> dependency
+}
+
+
+package "03. BLL (Business Logic Layer)" {
+    interface ICandyService {
+        + Task<IEnumerable<CandyResponseDto>> GetAllCandiesAsync(int userId)
+        + Task<CandyResponseDto> GetCandyByIdAsync(int id, int userId)
+        + Task<CandyResponseDto> AddCandyAsync(AddCandyRequestDto candyDto)
+        + Task UpdateCandyAsync(int id, UpdateCandyRequestDto candyDto)
+        + Task DeleteCandyAsync(int id)
+        + Task<IEnumerable<CandyResponseDto>> GetCandiesByCategoryAsync(int categoryId, int userId)
+    }
+
+    class CandyService {
+        ' Depends on ICandyRepository, IRepository<Brand>, IRepository<Category>, ITaxService
+        + CandyService(ICandyRepository candyRepository, IRepository<Brand> brandRepository, IRepository<Category> categoryRepository, ITaxService taxService)
+        ' Implements ICandyService methods
+    }
+    CandyService .up.|> ICandyService
+    CandyService ..> ICandyRepository : uses
+    CandyService ..> IRepository : uses
+    CandyService ..> ITaxService : uses
+    CandyService ..> CandyResponseDto : uses
+    CandyService ..> AddCandyRequestDto : uses
+    CandyService ..> UpdateCandyRequestDto : uses
+
+
+    interface IUserService {
+        + Task<AuthResponseDto> RegisterAsync(RegisterUserDto registerDto)
+        + Task<AuthResponseDto> LoginAsync(LoginRequestDto loginDto)
+        + Task<UserResponseDto> GetCurrentUserAsync(int userId)
+        + Task UpdateUserProfileAsync(int userId, UpdateUserDto updateDto)
+        + Task<IEnumerable<OrderHistoryItemDto>> GetUserOrderHistoryAsync(int userId)
+        + Task UpdateUserCountryAsync(int userId, string country)
+    }
+
+    class UserService {
+        ' Depends on IUserRepository, IJwtService
+        + UserService(IUserRepository userRepository, IJwtService jwtService)
+        ' Implements IUserService methods
+    }
+    UserService .up.|> IUserService
+    UserService ..> IUserRepository : uses
+    UserService ..> IJwtService : uses
+    UserService ..> RegisterUserDto : uses
+    UserService ..> LoginRequestDto : uses
+    UserService ..> AuthResponseDto : uses
+    UserService ..> UserResponseDto : uses
+    UserService ..> UpdateUserDto : uses
+    UserService ..> OrderHistoryItemDto : uses
+
+
+    interface IOrderService {
+        + Task<OrderResponseDto> PlaceOrderAsync(PlaceOrderRequestDto orderDto, int userId)
+        + Task<IEnumerable<OrderResponseDto>> GetUserOrdersAsync(int userId)
+        + Task UpdateOrderStatusAsync(int orderId, string newStatus)
+    }
+
+     class OrderService {
+        ' Depends on IOrderRepository, ICandyRepository, IUserRepository, ITaxService
+        + OrderService(IOrderRepository orderRepository, ICandyRepository candyRepository, IUserRepository userRepository, ITaxService taxService)
+        ' Implements IOrderService methods
+     }
+     OrderService .up.|> IOrderService
+     OrderService ..> IOrderRepository : uses
+     OrderService ..> ICandyRepository : uses
+     OrderService ..> IUserRepository : uses
+     OrderService ..> ITaxService : uses
+     OrderService ..> PlaceOrderRequestDto : uses
+     OrderService ..> OrderResponseDto : uses
+
+}
+
+@enduml

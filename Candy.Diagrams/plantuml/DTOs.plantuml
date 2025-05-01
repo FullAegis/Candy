@@ -1,0 +1,114 @@
+@startuml
+' Set direction for the diagram
+left to right direction
+
+title Data Transfer Objects (DTOs)
+
+package "05. DTOs (Data Transfer Objects)" {
+    class AddCandyRequestDto {
+        + string Name
+        + string Description
+        + decimal TaxFreePrice
+        + int StockQuantity
+        + int BrandId
+        + int CategoryId
+    }
+
+    class UpdateCandyRequestDto {
+        + string Name
+        + string Description
+        + decimal TaxFreePrice
+        + int StockQuantity
+        + int BrandId
+        + int CategoryId
+    }
+
+    class CandyResponseDto {
+         + int Id
+         + string Name
+         + string Description
+         + decimal TaxFreePrice
+         + decimal PriceWithTax
+         + int StockQuantity
+         + string BrandName
+         + string CategoryName
+     }
+
+    class RegisterUserDto {
+        + string Username
+        + string Password
+        + string Email
+        + string Country
+    }
+
+    class LoginRequestDto {
+        + string Username
+        + string Password
+    }
+
+    class AuthResponseDto {
+        + string Token
+        + int UserId
+        + string Username
+        + string Role
+        + string Country
+    }
+
+    class UserResponseDto {
+        + int Id
+        + string Username
+        + string Email
+        + string FirstName
+        + string LastName
+        + string Role
+        + string Country
+    }
+
+    class UpdateUserDto {
+        + string Email
+        + string FirstName
+        + string LastName
+        + string Country
+    }
+
+    class PlaceOrderRequestDto {
+         + List<OrderItemDto> Items
+    }
+
+     class OrderItemDto {
+         + int CandyId
+         + int Quantity
+     }
+
+     class OrderResponseDto {
+         + int Id
+         + DateTime OrderDate
+         + string Status
+         + List<OrderItemResponseDto> Items
+         + decimal TotalTaxAmount
+         + decimal TotalPriceWithTax
+     }
+
+     class OrderItemResponseDto {
+         + int CandyId
+         + string CandyName
+         + int Quantity
+         + decimal UnitPrice
+         + decimal TaxRateApplied
+         + decimal ItemPriceWithTax
+     }
+
+     class OrderHistoryItemDto {
+         + int OrderId
+         + DateTime OrderDate
+         + string Status
+         + decimal TotalTaxAmount
+         + decimal TotalPriceWithTax
+         + int NumberOfItems
+     }
+}
+' Internal DTO relationships
+PlaceOrderRequestDto "*" --> "1" OrderItemDto : contains
+OrderResponseDto "*" --> "1" OrderItemResponseDto : contains
+
+@enduml

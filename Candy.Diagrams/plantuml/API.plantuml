@@ -1,0 +1,81 @@
+@startuml
+' Set direction for the diagram
+left to right direction
+
+title API Layer (Controllers)
+
+' Include necessary elements from other layers for context
+package "03. BLL (Interfaces Partial)" {
+    interface ICandyService { }
+    interface IUserService { }
+    interface IOrderService { }
+}
+
+package "05. DTOs" {
+    class AddCandyRequestDto { }
+    class UpdateCandyRequestDto { }
+    class CandyResponseDto { }
+    class RegisterUserDto { }
+    class LoginRequestDto { }
+    class AuthResponseDto { }
+    class UserResponseDto { }
+    class UpdateUserDto { }
+    class PlaceOrderRequestDto { }
+    class OrderResponseDto { }
+    class OrderHistoryItemDto { }
+    class OrderItemDto { } 
+    ' Used by PlaceOrderRequestDto
+    class OrderItemResponseDto { } 
+    ' Used by OrderResponseDto
+}
+
+
+package "04. API Layer" {
+    class CandyController {
+        ' Depends on ICandyService (Block 4)
+        + CandyController(ICandyService candyService)
+        + IActionResult GetAll()
+        + IActionResult GetById(int id)
+        + IActionResult Add([FromBody]AddCandyRequestDto candyDto)
+        + IActionResult Update(int id, [FromBody]UpdateCandyRequestDto candyDto)
+        + IActionResult Delete(int id)
+        + IActionResult GetByCategory(int categoryId)
+    }
+    CandyController ..> ICandyService : uses
+    CandyController ..> AddCandyRequestDto
+    CandyController ..> UpdateCandyRequestDto
+    CandyController ..> CandyResponseDto
+
+
+    class UserController {
+        ' Depends on IUserService (Block 4)
+        + UserController(IUserService userService)
+        + IActionResult Register([FromBody]RegisterUserDto registerDto)
+        + IActionResult Login([FromBody]LoginRequestDto loginDto)
+        + IActionResult GetCurrentUser()
+        + IActionResult UpdateProfile([FromBody]UpdateUserDto updateDto)
+        + IActionResult GetOrderHistory()
+        + IActionResult UpdateCountry([FromBody]string country)
+    }
+    UserController ..> IUserService : uses
+    UserController ..> RegisterUserDto
+    UserController ..> LoginRequestDto
+    UserController ..> AuthResponseDto
+    UserController ..> UserResponseDto
+    UserController ..> UpdateUserDto
+    UserController ..> OrderHistoryItemDto
+
+
+    class OrderController {
+        ' Depends on IOrderService (Block 4)
+        + OrderController(IOrderService orderService)
+        + IActionResult PlaceOrder([FromBody]PlaceOrderRequestDto orderDto)
+        + IActionResult GetMyOrders()
+        + IActionResult UpdateStatus(int id, string status)
+    }
+    OrderController ..> IOrderService : uses
+    OrderController ..> PlaceOrderRequestDto
+    OrderController ..> OrderResponseDto
+
+}
+@enduml

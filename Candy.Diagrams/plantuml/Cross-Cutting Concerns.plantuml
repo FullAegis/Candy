@@ -1,0 +1,56 @@
+@startuml
+' Set direction for the diagram
+left to right direction
+
+title Cross-Cutting Concerns (JWT & Tax)
+
+' Include necessary elements from other layers for context
+package "01. Entities (Partial)" {
+    class User { }
+}
+
+package "02. DAL (Partial)" {
+    interface IRepository<T> { }
+    interface IUserRepository {
+         IUserRepository <|-- IRepository<User>
+         ' Include method TaxService depends on
+         + Task<User> GetByIdAsync(int userId)
+    }
+     class UserRepository {
+     ' Simple representation for dependency
+        + UserRepository(CandyDbContext context)
+     }
+    UserRepository .up.|> IUserRepository
+}
+
+
+package "06. Cross-Cutting Concerns" {
+    interface IJwtService {
+        + string GenerateToken(User user)
+        + ClaimsPrincipal GetPrincipalFromToken(string token)
+    }
+
+    class JwtService {
+        + JwtService(IConfiguration configuration)
+        ' Implements IJwtService methods
+    }
+    JwtService .up.|> IJwtService
+    JwtService ..> User : uses
+
+    interface ITaxService {
+        + Task<decimal> GetTaxRateForUserAsync(int userId)
+        + Task<decimal> GetTaxRateByCountryCodeAsync(string countryCode)
+    }
+
+    class TaxService {
+        ' Depends on IUserRepository
+        + TaxService(IUserRepository userRepository)
+        ' Implements ITaxService methods
+        ' Contains logic to look up tax rate
+    }
+    TaxService .up.|> ITaxService
+    TaxService ..> IUserRepository : uses
+
+}
+
+@enduml

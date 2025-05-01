@@ -1,0 +1,77 @@
+@startuml
+' Set direction for the diagram
+left to right direction
+
+title Entity Model
+
+package "01. Entities" {
+    class Brand {
+        + int Id
+        + string Name
+    }
+
+    class Category {
+        + int Id
+        + string Name
+    }
+
+    class Candy {
+        + int Id
+        + string Name
+        + string Description
+        + decimal TaxFreePrice
+        + int StockQuantity
+        -- Foreign Keys --
+        + int BrandId
+        + int CategoryId
+        -- Navigation Properties --
+        + Brand Brand
+        + Category Category
+        + ICollection<OrderItem> OrderItems
+    }
+
+    class User {
+        + int Id
+        + string Username
+        + string PasswordHash
+        + string Email
+        + string FirstName
+        + string LastName
+        + string Role
+        + string Country
+        + ICollection<Order> Orders
+    }
+
+    class Order {
+        + int Id
+        + int UserId
+        + DateTime OrderDate
+        + string Status
+        + User User
+        + ICollection<OrderItem> OrderItems
+        + decimal TotalTaxAmount
+        + decimal TotalPriceWithTax
+    }
+
+    class OrderItem {
+        + int Id
+        + int OrderId
+        + int CandyId
+        + int Quantity
+        + decimal UnitPrice
+        + decimal TaxRateApplied
+        + decimal ItemTaxAmount
+        + decimal ItemPriceWithTax
+        + Order Order
+        + Candy Candy
+    }
+
+    ' Relationships between Entities (Associations)
+    Brand "1" -- "*" Candy : has
+    Category "1" -- "*" Candy : belongs to
+    User "1" -- "*" Order : places
+    Order "1" -- "*" OrderItem : contains
+    Candy "1" -- "*" OrderItem : appears in
+}
+
+@enduml
