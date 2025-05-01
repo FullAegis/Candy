@@ -20,20 +20,19 @@ public class BrandRepository : IBrandRepository {
     return brand;
   }
 
-  public void Add(Brand brand) {
+  public void Add(in Brand brand) {
     _context.Brands.Add(brand);
     _context.SaveChanges();
   }
     
-  public void Update(int id, Brand brand) {
+  public void Update(int id, in Brand brand) {
     var brandToUpdate = _context.Brands.FirstOrDefault(b => b.Id == id);
     ArgumentNullException.ThrowIfNull(brandToUpdate);
     brandToUpdate.Name = brand.Name;
     _context.SaveChanges();
   }
-  public void Delete(Brand brand) => _context.Brands.Remove(brand);
   
-  public void Delete(Brand brand) {
+  public void Delete(in Brand brand) {
     _context.Brands.Remove(brand);
     _context.SaveChanges();
   }
