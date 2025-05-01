@@ -7,7 +7,8 @@ namespace Candy.DAL.Configurations.Products;
 public class BrandConfig : IEntityTypeConfiguration<Brand> {
   public void Configure(EntityTypeBuilder<Brand> builder) {
     builder.HasKey(x => x.Id)
-           .HasName("PK_Brand");
+           .HasName("PK_Brand")
+           ;
     
     builder.Property(x => x.Name)
            .HasColumnName("Name")
