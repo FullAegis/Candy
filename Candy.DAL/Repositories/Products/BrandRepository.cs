@@ -6,15 +6,15 @@ namespace Candy.DAL.Repositories.Products;
 public class BrandRepository : IBrandRepository {
   private readonly CandyDbContext _context;
   
-  public IEnumerable<Brand> GetAll() => _context.Brands.ToList();
+  public List<Brand> GetAll() => _context.Brands.ToList();
 
-  public Brand GetById(int id) {
+  public Brand Get(int id) {
     var brand = _context.Brands.FirstOrDefault(b => b.Id == id);
     ArgumentNullException.ThrowIfNull(brand);
     return brand;
   }
 
-  public Brand GetByName(string name) {
+  public Brand Get(string name) {
     var brand = _context.Brands.FirstOrDefault(b => b.Name == name);
     ArgumentNullException.ThrowIfNull(brand);
     return brand;
