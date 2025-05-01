@@ -11,6 +11,7 @@ public class CandyDbContext : DbContext {
   public DbSet<User> Users { get => Set<User>(); }
   public DbSet<Brand> Brands { get => Set<Brand>(); }
   public DbSet<Candy> Candies { get => Set<Candy>(); }
+  public DbSet<Category> Categories { get => Set<Category>(); }
   
   public CandyDbContext(CandyDbCtxOpts options)
     : base(options)
