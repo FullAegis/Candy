@@ -33,4 +33,14 @@ public class BrandRepository : IBrandRepository {
   }
   public void Delete(Brand brand) => _context.Brands.Remove(brand);
   
+  public void Delete(Brand brand) {
+    _context.Brands.Remove(brand);
+    _context.SaveChanges();
+  }
+
+  public void Delete(int id) {
+    var brandToDelete = _context.Brands.FirstOrDefault(b => b.Id == id);
+    ArgumentNullException.ThrowIfNull(brandToDelete);
+    Delete(brandToDelete);
+  }
 };
