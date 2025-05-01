@@ -3,8 +3,8 @@ using Candy.DAL.Models.Products;     // Brand
 
 namespace Candy.DAL.Repositories.Products;
 
-public class BrandRepository : IBrandRepository {
-  private readonly CandyDbContext _context;
+public class BrandRepository(CandyDbContext context) : IBrandRepository {
+  private readonly CandyDbContext _context = context;
   
   public List<Brand> GetAll() => _context.Brands.ToList();
 

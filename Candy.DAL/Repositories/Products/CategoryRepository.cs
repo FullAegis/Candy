@@ -3,8 +3,8 @@ using Candy.DAL.Models.Products;     // Category
 
 namespace Candy.DAL.Repositories.Products;
 
-public class CategoryRepository : ICategoryRepository {
-  private readonly CandyDbContext _context;
+public class CategoryRepository(CandyDbContext context) : ICategoryRepository {
+  private readonly CandyDbContext _context = context;
   
   public List<Category> GetAll() => _context.Categories.ToList();
 
