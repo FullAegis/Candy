@@ -8,4 +8,5 @@ public interface IBrandRepository {
   void Add(Dal::Brand brand);
   void Update(Dal::Brand brand);
   void Delete(Dal::Brand brand);
+  void Delete(int id);
 };
