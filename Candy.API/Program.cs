@@ -3,7 +3,9 @@ using Candy.BLL.Interfaces;
 using Candy.BLL.Services;
 using Candy.DAL;
 using Candy.DAL.Interfaces;
+using Candy.DAL.Interfaces.Products;
 using Candy.DAL.Repositories;
+using Candy.DAL.Repositories.Products;
 using Candy.Tools;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -46,6 +48,10 @@ builder.Services.AddSwaggerGen(c => {
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IBrandRepository, BrandRepository>();
+builder.Services.AddScoped<ICandyRepository, CandyRepository>();
+
 builder.Services.AddDbContext<CandyDbContext>(options =>
   options.UseSqlServer(builder.Configuration.GetConnectionString("default"))
 );
