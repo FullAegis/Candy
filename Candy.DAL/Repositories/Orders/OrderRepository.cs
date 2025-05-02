@@ -30,6 +30,8 @@ public class OrderRepository(CandyDbContext context) : IOrderRepository {
     o.TotalTaxAmount = entity.TotalTaxAmount;
     o.TotalPriceWithTax = entity.TotalPriceWithTax;
     o.OrderItems = entity.OrderItems;
+    
+    _context.SaveChanges();
   }
 
   public void Delete(in Order entity) {
