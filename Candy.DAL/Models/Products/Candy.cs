@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Candy.DAL.Models.Orders;
 
 namespace Candy.DAL.Models.Products {
   public class Candy {
