@@ -1,4 +1,4 @@
-using Candy.DAL.Models;
+using Candy.DAL.Models.Orders;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
