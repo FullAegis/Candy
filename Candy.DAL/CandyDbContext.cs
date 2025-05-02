@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
 using Candy.DAL.Models;
+using Candy.DAL.Models.Addresses;
 using Candy.DAL.Models.Orders;
 using Candy.DAL.Models.Products;
 
@@ -9,12 +10,19 @@ using CandyDbCtxOpts = DbContextOptions<CandyDbContext>;
 using Candy = Models.Products.Candy;
 
 public class CandyDbContext : DbContext {
+  public DbSet<City> Cities { get => Set<City>(); }
+  public DbSet<Address> Addresses { get => Set<Address>(); }
+  
   public DbSet<User> Users { get => Set<User>(); }
+  // public DbSet<Customer> Customers { get => Set<Customer>(); }
+  
   public DbSet<Brand> Brands { get => Set<Brand>(); }
   public DbSet<Candy> Candies { get => Set<Candy>(); }
   public DbSet<Category> Categories { get => Set<Category>(); }
+  
   public DbSet<Order> Orders { get => Set<Order>(); }
   public DbSet<OrderItem> OrderItems { get => Set<OrderItem>(); }
+  
   
   public CandyDbContext(CandyDbCtxOpts options)
     : base(options)
