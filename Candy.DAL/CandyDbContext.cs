@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
 using Candy.DAL.Models;
+using Candy.DAL.Models.Orders;
 using Candy.DAL.Models.Products;
 
 namespace Candy.DAL {
