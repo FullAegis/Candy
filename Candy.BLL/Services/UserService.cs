@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Runtime;
 using Candy.BLL.Mappers;    // Bll::User::ToDal()
 using Candy.BLL.Interfaces; // IUserService
@@ -12,7 +13,7 @@ public class UserService : IUserService {
 
   public UserService(IUserRepository users) => _users = users;
   
-  public Bll::User Login(in string email, in string password) {
+  public Bll::User Login([EmailAddress] in string email, in string password) {
     try {
       var hash = _users.GetPassword(email);
       
