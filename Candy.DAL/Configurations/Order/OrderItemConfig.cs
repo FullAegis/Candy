@@ -2,7 +2,7 @@ using Candy.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Candy.DAL.Configurations {
+namespace Candy.DAL.Configurations.Order {
   public class OrderItemConfig : IEntityTypeConfiguration<OrderItem> {
     public void Configure(EntityTypeBuilder<OrderItem> builder) {
       builder.ToTable(nameof(OrderItem))
