@@ -1,62 +1,64 @@
+## [FR](lisezmoi.md)
+
 # Candy Store Inventory Management API
-## Laboratoire: Développement d'un système de gestion d'inventaire pour une boutique en ligne avec API REST
+## Lab: Development of an Inventory Management System for an Online Store with a REST API
 
-## Objectif
+## Objective
 
-Le but de ce laboratoire est de concevoir un système de gestion d'inventaire pour une boutique en ligne. Ce système doit permettre de gérer les produits, les commandes et les utilisateurs de la boutique.
+The goal of this lab is to design an inventory management system for an online store. This system should allow managing the store's products, orders, and users.
 
-## Technologies requises
+## Required Technologies
 
-*   ASP.NET Web API pour la création de l'API REST
-*   ADO.NET pour la manipulation des données dans la base de données
-*   LINQ pour les requêtes sur les collections et les entités
-*   JWT pour l'authentification et l'autorisation des utilisateurs
+*   ASP.NET Web API for creating the REST API
+*   ADO.NET for data manipulation in the database
+*   LINQ for querying collections and entities
+*   JWT for user authentication and authorization
 
-## Description du système
+## System Description
 
-Le système doit permettre aux administrateurs de la boutique d'ajouter de nouveaux produits, de mettre à jour les informations des produits existants, de gérer les commandes passées par les utilisateurs et de suivre l'état des stocks. Les produits seront catégoriser (ex : Frais, Fruit & légume, Électronique, Jouets, ...) Et donc filtrer par catégorie à la demande.
+The system should allow store administrators to add new products, update information for existing products, manage orders placed by users, and track stock levels. Products will be categorized (e.g., Fresh, Fruits & Vegetables, Electronics, Toys, ...) and therefore filterable by category on demand.
 
-## Fonctionnalités attendues
+## Expected Features
 
-### 1. Gestion des produits :
+### 1. Product Management:
 
-*   Endpoint pour ajouter un nouveau produit avec ses détails (nom, description, prix, quantité en stock, etc.).
-*   Endpoint pour récupérer la liste de tous les produits disponibles.
-*   Endpoint pour récupérer la fiche produit complète (catégorie, prix HTVA + TVAC, ...).
-*   Endpoint pour mettre à jour les informations d'un produit existant.
-*   Endpoint pour supprimer un produit du catalogue.
+*   Endpoint to add a new product with its details (name, description, price, stock quantity, etc.).
+*   Endpoint to retrieve the list of all available products.
+*   Endpoint to retrieve the complete product sheet (category, price excl. VAT + incl. VAT, ...).
+*   Endpoint to update the information of an existing product.
+*   Endpoint to delete a product from the catalog.
 
-### 2. Gestion des commandes :
+### 2. Order Management:
 
-*   Endpoint pour passer une nouvelle commande avec les détails du produit et de l'utilisateur.
-*   Endpoint pour récupérer la liste des commandes passées.
-*   Endpoint pour marquer une commande comme traitée ou annulée.
+*   Endpoint to place a new order with product and user details.
+*   Endpoint to retrieve the list of placed orders.
+*   Endpoint to mark an order as processed or cancelled.
 
-### 3. Gestion des utilisateurs :
+### 3. User Management:
 
-*   Endpoint pour l'inscription des nouveaux utilisateurs.
-*   Endpoint pour la connexion des utilisateurs, générant et retournant un token JWT valide en cas de succès.
-*   Endpoint pour récupérer les informations de l'utilisateur connecté.
-*   Endpoint pour mettre à jour le profil utilisateur.
-*   Endpoint fournissant l'historique de commande d'un utilisateur.
+*   Endpoint for new user registration.
+*   Endpoint for user login, generating and returning a valid JWT token upon success.
+*   Endpoint to retrieve information about the logged-in user.
+*   Endpoint to update the user profile.
+*   Endpoint providing a user's order history.
 
-## Tâches à effectuer
+## Tasks to Perform
 
-1.  Mise en place du projet ASP.NET Web API.
-2.  Configuration de la base de données :
-    *   Créer une base de données pour stocker les informations des produits, des commandes et des utilisateurs.
-    *   Concevoir des tables pour chaque entité avec les champs appropriés.
-3.  Implémentation des endpoints de l'API pour les fonctionnalités décrites ci-dessus.
-4.  Utilisation d'ADO.NET pour la manipulation des données dans la base de données.
-5.  Utilisation de LINQ pour effectuer des opérations de requêtes et de filtrage sur les données.
-6.  Implémentation de l'authentification et de l'autorisation avec JWT pour sécuriser l'accès aux fonctionnalités administratives.
+1.  Set up the ASP.NET Web API project.
+2.  Database configuration:
+    *   Create a database to store information about products, orders, and users.
+    *   Design tables for each entity with appropriate fields.
+3.  Implement the API endpoints for the functionalities described above.
+4.  Use ADO.NET for data manipulation in the database.
+5.  Use LINQ to perform query and filtering operations on the data.
+6.  Implement authentication and authorization with JWT to secure access to administrative functionalities.
 
-## Livraisons attendues
+## Expected Deliverables
 
-*   Code source du projet ASP.NET Web API.
-*   Documentation décrivant les endpoints de l'API, les méthodes implémentées, ainsi que les instructions pour tester l'API.
-*   Rapport détaillant les différentes étapes du développement, les problèmes rencontrés et les solutions adoptées.
+*   Source code of the ASP.NET Web API project.
+*   Documentation describing the API endpoints, the implemented methods, as well as instructions for testing the API.
+*   Report detailing the different development steps, the problems encountered, and the solutions adopted.
 
-## Remarque
+## Note
 
-Il est recommandé d'utiliser des bonnes pratiques de développement telles que la validation des données en entrée, la gestion des erreurs, la sécurité des données, etc.
+It is recommended to use good development practices such as input data validation, error handling, data security, etc.
