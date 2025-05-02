@@ -21,6 +21,7 @@ public class CandyDbContext : DbContext {
   => Database.EnsureCreated(); 
 
   protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
+#warning Connection String Is Placeholder !
     if (optionsBuilder.IsConfigured is false)
       optionsBuilder.UseSqlServer(
         """

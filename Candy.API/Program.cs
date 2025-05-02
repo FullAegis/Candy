@@ -18,7 +18,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c => {
   // Définir les information générales de notre API dans swagger
-  c.SwaggerDoc("v1", new Oapi::OpenApiInfo { Title = "Candy Shop", Version = "v0.1.0" });
+  c.SwaggerDoc("v1", new Oapi::OpenApiInfo { Title = "Candy Shop", Version = "v0.1.1" });
 
   // Déclarer une schema de sécurité de type Bearer pour Swagger
   c.AddSecurityDefinition("Bearer", new Oapi::OpenApiSecurityScheme
