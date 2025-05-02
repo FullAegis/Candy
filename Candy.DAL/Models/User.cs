@@ -19,5 +19,8 @@ public class User {
   [Required]
   [PasswordPropertyText]
   public required string Password { get; set; }
+  
+  // [User] 1 —— Places ——> * [Order]
+  public ICollection<Order> Orders { get; set; }
 };
 }
