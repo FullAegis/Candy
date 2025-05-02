@@ -14,7 +14,7 @@ namespace Candy.DAL.Models {
     public User User { get; set; }
     
     [Required]
-    [Column(TypeName = "datetime")]
+    [Column(TypeName = "datetime2")]
     public required DateTime OrderDate { get; set; }
     
     [Required]
