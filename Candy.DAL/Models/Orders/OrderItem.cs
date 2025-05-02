@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Candy.DAL.Models {
+namespace Candy.DAL.Models.Orders {
   using Dal = Candy.DAL.Models.Products;
   
   public class OrderItem {
