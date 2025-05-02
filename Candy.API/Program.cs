@@ -3,7 +3,6 @@ using Candy.BLL.Interfaces;
 using Candy.BLL.Services;
 using Candy.DAL;
 using Candy.DAL.Interfaces;
-using Candy.DAL.Interfaces.Products;
 using Candy.DAL.Repositories;
 using Candy.DAL.Repositories.Products;
 using Candy.Tools;

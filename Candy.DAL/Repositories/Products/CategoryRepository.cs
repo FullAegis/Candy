@@ -1,5 +1,5 @@
-using Candy.DAL.Interfaces.Products; // ICategoryRepository
-using Candy.DAL.Models.Products;     // Category
+using Candy.DAL.Models.Products; // Category
+using Candy.DAL.Interfaces;      // ICategoryRepository
 
 namespace Candy.DAL.Repositories.Products;
 
