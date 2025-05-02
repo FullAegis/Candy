@@ -1,18 +1,28 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Candy.DAL.Models.Products {
-public class Candy {
-  [Key] public int Id { get; set; }
-  
-  [Required] [MaxLength(128)]
-  public required string Name { get; set; }
-  [Required] 
-  public required Brand Brand { get; set; }
-  [Required]
-  public required Category Category { get; set; }
-  
-  [Required] [Range(1e-3, 1e+9)] // [0.001, 1_000_000_000]
-  public required decimal PriceBeforeTax { get; set; }
-  
-};
+  public class Candy {
+    [Key] public int Id { get; set; }
+
+    [Required] public string Name { get; set; }
+    public string? Description { get; set; }
+
+    [Required]
+    [Column(TypeName = "decimal(18, 2)")]
+    public decimal PriceBeforeTax { get; set; }
+
+    [Required]
+    public uint StockQuantity { get; set; } = 0u;
+
+#region Foreign Key Properties
+    [Required] public int BrandId { get; set; }
+    [Required] public int CategoryId { get; set; }
+#endregion
+#region Navigation Properties
+    [ForeignKey("BrandId")] public Brand Brand { get; set; } 
+    [ForeignKey("CategoryId")] public Category Category { get; set; }
+    public ICollection<OrderItem> OrderItems { get; set; }
+#endregion
+  };
 }
