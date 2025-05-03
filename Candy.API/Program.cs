@@ -3,7 +3,9 @@ using Candy.BLL.Interfaces;
 using Candy.BLL.Services;
 using Candy.DAL;
 using Candy.DAL.Interfaces;
+using Candy.DAL.Interfaces.Orders;
 using Candy.DAL.Repositories;
+using Candy.DAL.Repositories.Orders;
 using Candy.DAL.Repositories.Products;
 using Candy.Tools;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -12,63 +14,79 @@ using Microsoft.IdentityModel.Tokens;
 
 using Oapi = Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
+var services = builder.Services;
 
 // Add services to the container.
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c => {
-  // Définir les information générales de notre API dans swagger
-  c.SwaggerDoc("v1", new Oapi::OpenApiInfo { Title = "Candy Shop", Version = "v0.1.1" });
+services.AddControllers();
+services.AddEndpointsApiExplorer();
+services.AddSwaggerGen(c => {
+  // General Information for Swagger API
+  c.SwaggerDoc("v1", new Oapi::OpenApiInfo { Title = "Candy Shop", Version = "v0.2.0" });
 
-  // Déclarer une schema de sécurité de type Bearer pour Swagger
-  c.AddSecurityDefinition("Bearer", new Oapi::OpenApiSecurityScheme
-  { Description = "Token bearer utilise le scheama (Bearer {token})"
-  , Name = "Authorization"                 // Nom de l'en-tête HTTP
-  , In = Oapi::ParameterLocation.Header    // Indique que l'info est envoyé dans le header HTTP
-  , Type = Oapi::SecuritySchemeType.ApiKey // Déclare une clé API de type Bearer
-  , Scheme = "Bearer"                      // Nom du schéma utilisé
+  var securitySchemeName = "BearerSecDef";
+  // Security Scheme of type bearer for Swagger API
+  c.AddSecurityDefinition(securitySchemeName, new Oapi::OpenApiSecurityScheme
+  { Description = "Token bearer uses scheme (Bearer {token})"
+  , In = Oapi::ParameterLocation.Header    // Bearer is stored in the HTTP Header
+  , Name = "Authorization"                 // Name of HTTP Header
+  , Type = Oapi::SecuritySchemeType.ApiKey // API Key Type (Bearer)
+  , Scheme = "Bearer"                      // Scheme Name
   });
 
-  // Ajoute une exigence de sécurité globale pour toutes les routes prottégés par [Authorize]
+  // Security Requirements for Routes marked with [Authorize]
   c.AddSecurityRequirement(new Oapi::OpenApiSecurityRequirement {
     { new Oapi::OpenApiSecurityScheme
       { Reference = new Oapi::OpenApiReference 
         { Type = Oapi::ReferenceType.SecurityScheme
-        , Id = "Bearer"
+        , Id = securitySchemeName // References the OpenApiSecurityScheme we defined above
         }
       , Scheme = "oauth2" // Nécéssaire pour swagger (interface)
-      , Name = "Bearer"
       , In = Oapi::ParameterLocation.Header
+      , Name = "Bearer"
       }
-    , new List<string>() // Liste vide => Pas de scopes spécifique nécéssaires...
+    ,  new List<string>() // IList<string> 
     }
   });
 });
 
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-builder.Services.AddScoped<IBrandRepository, BrandRepository>();
-builder.Services.AddScoped<ICandyRepository, CandyRepository>();
+#region BLL.Services
+services.AddScoped<IUserService, UserService>();
+#endregion
 
-builder.Services.AddDbContext<CandyDbContext>(options =>
-  options.UseSqlServer(builder.Configuration.GetConnectionString("default"))
+#region DAL.Repositories.Users
+services.AddScoped<IUserRepository, UserRepository>();
+#endregion
+#region DAL.Repositories.Products
+services.AddScoped<ICategoryRepository, CategoryRepository>();
+services.AddScoped<IBrandRepository, BrandRepository>();
+services.AddScoped<ICandyRepository, CandyRepository>();
+#endregion
+#region DAL.Repositories.Orders
+services.AddScoped<IOrderRepository, OrderRepository>();
+services.AddScoped<IOrderItemRepository, OrderItemRepository>();
+#endregion
+
+var config = builder.Configuration;
+services.AddDbContext<CandyDbContext>(options =>
+  options.UseSqlServer(config.GetConnectionString("default"))
 );
 
-builder.Services.AddSingleton<TokenManager>();
-// Configuration de l'authentification JWT
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-  .AddJwtBearer(options =>
-  {
+services.AddSingleton<TokenManager>();
+// Configuration for JWT Auth
+services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+  .AddJwtBearer(options => {
+    var _keyRaw = config["jwt:key"];
+    var key = Encoding.UTF8.GetBytes(_keyRaw!);
+    var issuer = config["jwt:issuer"];
+    var audience = config["jwt:audience"];
+    
     options.TokenValidationParameters = new TokenValidationParameters
-    {
-      ValidateIssuer = true,
-      ValidateAudience = true,
-      ValidateLifetime = true,
-      ValidIssuer = builder.Configuration["jwt:issuer"],
-      ValidAudience = builder.Configuration["jwt:audience"],
-      IssuerSigningKey =
-        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["jwt:key"]!))
+    { ValidateIssuer = true 
+    , ValidateAudience = true
+    , ValidateLifetime = true
+    , ValidIssuer = issuer
+    , ValidAudience = audience
+    , IssuerSigningKey = new SymmetricSecurityKey(key)
     };
   });
 
