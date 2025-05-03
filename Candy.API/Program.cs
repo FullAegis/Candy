@@ -19,7 +19,7 @@ var services = builder.Services;
 // Add services to the container.
 services.AddControllers();
 services.AddEndpointsApiExplorer();
-services.AddSwaggerGen(c => {
+services.AddSwaggerGen(static c => {
   // General Information for Swagger API
   c.SwaggerDoc("v1", new Oapi::OpenApiInfo { Title = "Candy Shop", Version = "v0.2.0" });
 
@@ -75,8 +75,10 @@ services.AddSingleton<TokenManager>();
 // Configuration for JWT Auth
 services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
   .AddJwtBearer(options => {
-    var _keyRaw = config["jwt:key"];
-    var key = Encoding.UTF8.GetBytes(_keyRaw!);
+    var keyRaw = config["jwt:key"];
+    ArgumentNullException.ThrowIfNull(keyRaw);
+    
+    var key = Encoding.UTF8.GetBytes(keyRaw);
     var issuer = config["jwt:issuer"];
     var audience = config["jwt:audience"];
     
