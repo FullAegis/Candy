@@ -1,5 +1,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
+using Candy.BLL.Models.Orders;
 
 namespace Candy.BLL.Models {
   public class User {
@@ -17,5 +19,7 @@ namespace Candy.BLL.Models {
     [Required]
     [PasswordPropertyText]
     public required string Password { get; set; }
+
+    public ICollection<Order> Orders { get; set; }
   };
 }
