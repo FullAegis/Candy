@@ -25,7 +25,7 @@ public class UserService(IUserRepository users) : IUserService {
     }
   }
 
-  public void Register(Bll::User user) {
+  public void Register(in Bll::User user) {
     user.Password = BCrypt.HashPassword(user.Password);
     _users.Register(user.ToDal());
   }
