@@ -24,7 +24,7 @@ namespace Candy.Tools {
       var now = DateTime.Now;
       var myclaims = new Claim[] {
         new(ClaimTypes.Sid, user.Id.ToString())
-      , new(ClaimTypes.GivenName, user.Nom ?? "NomInconnu")
+      , new(ClaimTypes.GivenName, user.Email ?? "NomInconnu")
       , new(ClaimTypes.Expiration, now.AddHours(expirationDate).ToString(), ClaimValueTypes.DateTime)
       };
 
