@@ -21,19 +21,10 @@ public class CandyDbContext : DbContext {
   => Database.EnsureCreated(); 
 
   protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-#warning Connection String Is Placeholder !
-    if (optionsBuilder.IsConfigured is false)
-      optionsBuilder.UseSqlServer(
-        """
-        Data Source=PC-BSTORM\MSSQLSERVER01;
-        Initial Catalog=BookManager;
-        Integrated Security=True;
-        Connect Timeout=30;
-        Encrypt=True;
-        Trust Server Certificate=True;
-        Application Intent=ReadWrite;
-        Multi Subnet Failover=False
-        """);
+    var defaultConnection = Environment.GetEnvironmentVariable("Candy_DB__DefaultConnection");
+    if (optionsBuilder.IsConfigured is false) {
+      optionsBuilder.UseSqlServer(defaultConnection);
+    }
   }
 
   protected override void OnModelCreating(ModelBuilder modelBuilder) {
