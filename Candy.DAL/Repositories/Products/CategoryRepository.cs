@@ -30,7 +30,6 @@ public class CategoryRepository(CandyDbContext context) : ICategoryRepository {
     ArgumentNullException.ThrowIfNull(catToUpdate);
     Delete(catToUpdate);
     Add(category);
-    _context.SaveChanges();
   }
 
   public void Delete(in Category category) {
