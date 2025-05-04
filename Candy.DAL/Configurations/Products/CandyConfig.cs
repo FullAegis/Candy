@@ -8,7 +8,7 @@ namespace Candy.DAL.Configurations.Products;
 
 public class CandyConfig : IEntityTypeConfiguration<Dal::Candy> {
   public void Configure(EntityTypeBuilder<Dal::Candy> builder) {
-    builder.ToTable(nameof(Dal::Candy))
+    builder.ToTable(nameof(Candy))
            ;
     builder.HasKey(x => x.Id)
            .HasName("PK_Candy")
