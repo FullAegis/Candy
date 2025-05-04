@@ -11,7 +11,6 @@ public class BrandConfig : IEntityTypeConfiguration<Brand> {
     builder.HasKey(x => x.Id)
            .HasName("PK_Brand")
            ;
-    
     builder.Property(x => x.Name)
            .HasColumnName("Name")
            .HasColumnType("nvarchar(128)")
