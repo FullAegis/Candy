@@ -21,11 +21,7 @@ public class CandyDbContext : DbContext {
   => Database.EnsureCreated(); 
 
   protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-    var defaultConnection = Environment.GetEnvironmentVariable("Candy_DB__DefaultConnection");
-    if (optionsBuilder.IsConfigured is false) {
-      var defaultConnection = Environment.GetEnvironmentVariable("Candy_DB__DefaultConnection");
-      optionsBuilder.UseSqlServer(defaultConnection);
-    }
+    base.OnConfiguring(optionsBuilder);
   }
 
   protected override void OnModelCreating(ModelBuilder modelBuilder) {
