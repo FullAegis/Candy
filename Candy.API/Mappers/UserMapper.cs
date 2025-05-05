@@ -4,7 +4,7 @@ using Api = Candy.API.Models.DTO;
 using BCrypt = BCrypt.Net.BCrypt;
 
 public static class UserMapper {
-  public static Api::User ToApi(in Bll::User user) => new Api::User
+  public static Api::User ToApi(this Bll::User user) => new Api::User
   { Id = user.Id
   , FirstName = user.FirstName
   , LastName = user.LastName
