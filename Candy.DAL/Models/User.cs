@@ -14,6 +14,9 @@ namespace Candy.DAL.Models {
     
     [Required]
     [EmailAddress]
+    [StringLength( maximumLength: 128
+                 , MinimumLength = 8
+                 , ErrorMessage = "Email address must be 8 to 128 characters long.")]
     public required string Email { get; set; }
     
     [Required]
