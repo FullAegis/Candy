@@ -6,7 +6,10 @@ using Candy.DAL.Interfaces;
 public class UserRepository(CandyDbContext context) : IUserRepository {
   private readonly CandyDbContext _context = context;
   
-  public void Register(in User user) =>  _context.Users.Add(user);
+  public void Register(in User user) {
+    _context.Users.Add(user);
+    _context.SaveChanges();
+  } 
 
   public User Get(string email) {
     var user = _context.Users.FirstOrDefault(u => u.Email == email);
