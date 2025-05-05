@@ -26,7 +26,6 @@ public class UserRepository(CandyDbContext context) : IUserRepository {
   public void Update(int id, in User user) {
     var u = Get(id: id);
     
-    u.Id = user.Id;
     u.FirstName = user.FirstName;
     u.LastName = user.LastName;
     u.Email = user.Email;

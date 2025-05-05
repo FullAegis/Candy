@@ -5,7 +5,7 @@ using Candy.DAL.Models.Orders;
 
 namespace Candy.DAL.Models {
   public class User {
-    public required int Id { get; set; }
+    [Key] public required int Id { get; set; }
     
     [MaxLength(128)]
     public string LastName { get; set; }
@@ -16,11 +16,16 @@ namespace Candy.DAL.Models {
     [EmailAddress]
     [StringLength( maximumLength: 128
                  , MinimumLength = 8
-                 , ErrorMessage = "Email address must be 8 to 128 characters long.")]
+                 , ErrorMessage = "Email address must be 8 to 128 characters long.")
+    ]
     public required string Email { get; set; }
     
     [Required]
     [PasswordPropertyText]
+    [StringLength( maximumLength: 128
+                 , MinimumLength = 8
+                 , ErrorMessage = "Email address must be 8 to 128 characters long.")
+    ]
     public required string Password { get; set; }
     
     // [User] 1 —— Places ——> * [Order]

@@ -1,6 +1,8 @@
-namespace Candy.Mappers {
-using Bll = Candy.BLL.Models;
+using Candy.API.Models.DTO.Users; // UserRegisterFormDTO
 using Api = Candy.API.Models.DTO;
+using Bll = Candy.BLL.Models;
+
+namespace Candy.Mappers {
 using BCrypt = BCrypt.Net.BCrypt;
 
 public static class UserMapper {
@@ -20,8 +22,7 @@ public static class UserMapper {
   };
   
   public static Bll::User ToBll(this UserRegisterFormDTO form) => new Bll::User
-  { Id = form.Id
-  , FirstName = form.FirstName
+  { FirstName = form.FirstName
   , LastName = form.LastName
   , Email = form.Email
   , Password = BCrypt.HashPassword(form.Password)

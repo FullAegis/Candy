@@ -5,7 +5,7 @@ using Candy.BLL.Models.Orders;
 
 namespace Candy.BLL.Models {
   public class User {
-    public required int Id { get; set; }
+    [Key] public int Id { get; set; }
   
     [MaxLength(128)]
     public string LastName { get; set; }

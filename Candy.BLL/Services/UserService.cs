@@ -3,9 +3,9 @@ using System.Runtime;
 using Candy.BLL.Mappers;    // Bll::User::ToDal()
 using Candy.BLL.Interfaces; // IUserService
 using Candy.DAL.Interfaces; // IUserRepository
+using Bll = Candy.BLL.Models;
 
 namespace Candy.BLL.Services;
-using Bll = Candy.BLL.Models;
 using BCrypt = BCrypt.Net.BCrypt;
 
 public class UserService(IUserRepository users) : IUserService {

@@ -12,17 +12,17 @@ namespace Candy.DAL.Configurations {
              .HasName("PK_User")
              ;
       builder.Property(u => u.Email)
-             .HasColumnType("nvarchar(100)")
+             .HasColumnType("nvarchar(128)")
              ;
       builder.Property(u => u.Password)
-             .HasColumnType("nvarchar(100)")
+             .HasColumnType("nvarchar(128)")
              .IsRequired()
              ;
       builder.Property(u => u.FirstName)
-             .HasColumnType("nvarchar(100)")
+             .HasColumnType("nvarchar(128)")
              ;
       builder.Property(u => u.LastName)
-             .HasColumnType("nvarchar(100)")
+             .HasColumnType("nvarchar(128)")
              ;
     }
   };
