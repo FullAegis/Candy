@@ -19,5 +19,13 @@ public static class UserMapper {
   , Password = BCrypt.HashPassword(password)
   };
   
+  public static Bll::User ToBll(this UserRegisterFormDTO form) => new Bll::User
+  { Id = form.Id
+  , FirstName = form.FirstName
+  , LastName = form.LastName
+  , Email = form.Email
+  , Password = BCrypt.HashPassword(form.Password)
+  };
+  
 };
 }
