@@ -8,9 +8,11 @@ namespace Candy.DAL.Configurations {
     public void Configure(EntityTypeBuilder<User> builder) {
       builder.ToTable(nameof(User))
              ;
-      builder.HasIndex(u => u.Email)
-             .IsUnique()
-             .HasDatabaseName("UK_Utilisateur_Email")
+      builder.HasKey(u => u.Id)
+             .HasName("PK_User")
+             ;
+      builder.Property(u => u.Email)
+             .HasColumnType("nvarchar(100)")
              ;
       builder.Property(u => u.Password)
              .HasColumnType("nvarchar(100)")
