@@ -21,7 +21,7 @@ services.AddControllers();
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen(static c => {
   // General Information for Swagger API
-  c.SwaggerDoc("v1", new Oapi::OpenApiInfo { Title = "Candy Shop", Version = "v0.2.0" });
+  c.SwaggerDoc("v1", new Oapi::OpenApiInfo { Title = "Candy Shop", Version = "v0.3.0" });
 
   var securitySchemeName = "BearerSecDef";
   // Security Scheme of type bearer for Swagger API
