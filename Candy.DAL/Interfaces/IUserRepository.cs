@@ -2,7 +2,6 @@ using System.ComponentModel.DataAnnotations;
 using Dal = Candy.DAL.Models;
  
 namespace Candy.DAL.Interfaces {
-using Dal = Candy.DAL.Models;
 
 public interface IUserRepository {
   void Register(in Dal::User user);
