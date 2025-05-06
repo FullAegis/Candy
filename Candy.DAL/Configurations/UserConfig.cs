@@ -15,7 +15,7 @@ namespace Candy.DAL.Configurations {
              .HasColumnType("nvarchar(128)")
              ;
       builder.Property(u => u.Password)
-             .HasColumnType("nvarchar(128)")
+             .HasColumnType("nvarchar(max)")
              .IsRequired()
              ;
       builder.Property(u => u.FirstName)
