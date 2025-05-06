@@ -1,6 +1,7 @@
-namespace Candy.BLL.Mappers {
 using Bll = Candy.BLL.Models;
 using Dal = Candy.DAL.Models;
+
+namespace Candy.BLL.Mappers {
 public static class UserMapper {
   public static Bll::User ToBll(this Dal::User user) => new Bll::User
   { Id =  user.Id

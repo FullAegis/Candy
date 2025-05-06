@@ -7,7 +7,12 @@ public class UserRegisterFormDTO {
 
   [Required] [EmailAddress]
   public required string Email { get; set; }
-
-  [Required] public required string Password { get; set; }
+  
+  private string _password;
+  [Required]
+  public required string Password {
+    get => _password;
+    set => _password = BCrypt.Net.BCrypt.HashPassword(value);
+  }
 };
 }

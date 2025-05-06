@@ -14,18 +14,17 @@ public static class UserMapper {
   };
   
   public static Bll::User ToBll(this Api::User user, in string password) => new Bll::User
-  { Id = user.Id
-  , FirstName = user.FirstName
+  { FirstName = user.FirstName
   , LastName = user.LastName
   , Email = user.Email
-  , Password = BCrypt.HashPassword(password)
+  , Password = password
   };
   
   public static Bll::User ToBll(this UserRegisterFormDTO form) => new Bll::User
   { FirstName = form.FirstName
   , LastName = form.LastName
   , Email = form.Email
-  , Password = BCrypt.HashPassword(form.Password)
+  , Password = form.Password
   };
   
 };
