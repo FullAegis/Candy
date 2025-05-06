@@ -22,10 +22,6 @@ namespace Candy.DAL.Models {
     
     [Required]
     [PasswordPropertyText]
-    [StringLength( maximumLength: 128
-                 , MinimumLength = 8
-                 , ErrorMessage = "Email address must be 8 to 128 characters long.")
-    ]
     public required string Password { get; set; }
     
     // [User] 1 —— Places ——> * [Order]

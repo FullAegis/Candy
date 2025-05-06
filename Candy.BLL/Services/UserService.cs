@@ -25,23 +25,17 @@ public class UserService(IUserRepository users) : IUserService {
     }
   }
 
-  public void Register(in Bll::User user) {
-    user.Password = BCrypt.HashPassword(user.Password);
-    _users.Register(user.ToDal());
-  }
-
-  public Bll::User Get(int id) => _users.Get(id).ToBll();
-  
-
   public IEnumerable<Bll::Orders.Order> Orders(int userId) {
     var user = _users.Get(userId);
     ArgumentNullException.ThrowIfNull(user);
     return user.Orders.ToBll();
   }
 
+
+  public Bll::User Get(int id) => _users.Get(id).ToBll();
+  public void Register(in Bll::User user) => _users.Register(user.ToDal());
+  public void Update(int id, in Bll::User user) => _users.Update(id, user.ToDal());
   public void Delete(int userId) => _users.Delete(userId);
   public void Delete(in Bll::User user) => _users.Delete(user.Id);
-
-  public void Update(int id, in Bll::User user) => _users.Update(id, user.ToDal());
 };
 
