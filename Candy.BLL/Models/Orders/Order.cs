@@ -6,7 +6,6 @@ using Candy.BLL.Models.Products;
 using Bll = Candy.BLL.Models.Orders;
 
 namespace Candy.BLL.Models.Orders;
-using Bll = Candy.BLL.Models.Orders;
 public class Order {
   public int Id { get; set; }
   public int UserId { get; set; }
