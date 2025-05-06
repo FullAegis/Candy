@@ -12,7 +12,6 @@ public interface IUserRepository {
   void Delete(in Dal::User user);
   void Delete(int id);
   string GetPassword([EmailAddress] string email);
-  
 };
 }
 
