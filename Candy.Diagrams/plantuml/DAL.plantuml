@@ -10,79 +10,198 @@ package "01. Entities (Partial)" {
     class Category { }
     class Candy { }
     class User { }
-    class Order { }
-    class OrderItem { }
+}
+
+package "03. BLL (Models Partial)" {
+    package Models.Products {
+        class Brand { }
+        class Category { }
+        class Candy { }
+    }
+     package Models.Orders {
+        class Order { }
+        class OrderItem { }
+    }
+    package Models {
+        class User { }
+    }
 }
 
 package "02. DAL (Data Access Layer)" {
+    package Models {
+        class User {
+            + int Id
+            + string Username
+            + string Email
+            + string PasswordHash
+            + string Role
+            + string Country
+        }
+        package Products {
+            class Brand {
+                + int Id
+                + string Name
+            }
+            class Category {
+                + int Id
+                + string Name
+            }
+            class Candy {
+                + int Id
+                + string Name
+                + int BrandId
+                + int CategoryId
+                + decimal PriceBeforeTax
+                + uint StockQuantity
+                + Brand Brand
+                + Category Category
+            }
+            Candy --> Brand
+            Candy --> Category
+        }
+        package Orders {
+            class Order {
+                + int Id
+                + int UserId
+                + DateTime OrderDate
+                + string Status
+                + User User
+                + ICollection<OrderItem> OrderItems
+            }
+            class OrderItem {
+                + int Id
+                + int OrderId
+                + int ProductId
+                + uint Quantity
+                + decimal UnitPrice
+                + Order Order
+                + Products.Candy Product
+            }
+            Order "*" --> "1" OrderItem : contains
+            Order --> User : placed by
+            OrderItem --> Products.Candy : relates to
+        }
+    }
+
+    package Configurations {
+        package Products {
+            class BrandConfig implements IEntityTypeConfiguration<Models.Products.Brand> { }
+            class CategoryConfig implements IEntityTypeConfiguration<Models.Products.Category> { }
+            class CandyConfig implements IEntityTypeConfiguration<Models.Products.Candy> { }
+        }
+         package Orders {
+            class OrderConfig implements IEntityTypeConfiguration<Models.Orders.Order> { }
+            class OrderItemConfig implements IEntityTypeConfiguration<Models.Orders.OrderItem> { }
+         }
+        class UserConfig implements IEntityTypeConfiguration<Models.User> { }
+
+        Configurations.Products.BrandConfig ..> Models.Products.Brand : configures
+        Configurations.Products.CategoryConfig ..> Models.Products.Category : configures
+        Configurations.Products.CandyConfig ..> Models.Products.Candy : configures
+        Configurations.Orders.OrderConfig ..> Models.Orders.Order : configures
+        Configurations.Orders.OrderItemConfig ..> Models.Orders.OrderItem : configures
+        UserConfig ..> Models.User : configures
+    }
+
     class CandyDbContext {
-        + DbSet<Brand> Brands
-        + DbSet<Category> Categories
-        + DbSet<Candy> Candies
-        + DbSet<User> Users
-        + DbSet<Order> Orders
-        + DbSet<OrderItem> OrderItems
+        + DbSet<Models.Products.Brand> Brands
+        + DbSet<Models.Products.Category> Categories
+        + DbSet<Models.Products.Candy> Candies
+        + DbSet<Models.User> Users
+        + DbSet<Models.Orders.Order> Orders
+        + DbSet<Models.Orders.OrderItem> OrderItems
         -- Constructors --
         + CandyDbContext(DbContextOptions<CandyDbContext> options)
         -- Methods --
         # void OnModelCreating(ModelBuilder modelBuilder)
     }
+    CandyDbContext ..> Models.Products.Brand
+    CandyDbContext ..> Models.Products.Category
+    CandyDbContext ..> Models.Products.Candy
+    CandyDbContext ..> Models.User
+    CandyDbContext ..> Models.Orders.Order
+    CandyDbContext ..> Models.Orders.OrderItem
+    CandyDbContext ..> Configurations.Products.BrandConfig : applies
+    CandyDbContext ..> Configurations.Products.CategoryConfig : applies
+    CandyDbContext ..> Configurations.Products.CandyConfig : applies
+    CandyDbContext ..> Configurations.Orders.OrderConfig : applies
+    CandyDbContext ..> Configurations.Orders.OrderItemConfig : applies
+    CandyDbContext ..> UserConfig : applies
+
 
     interface IRepository<T> {
-        + Task<T> GetByIdAsync(int id)
-        + Task<IEnumerable<T>> GetAllAsync()
-        + Task<T> AddAsync(T entity)
-        + Task UpdateAsync(T entity)
-        + Task DeleteAsync(int id)
+        + T GetById(int id)
+        + IEnumerable<T> GetAll()
+        + void Add(in T entity)
+        + void Update(int id, in T entity)
+        + void Remove(int id)
+        + void Remove(in T entity)
     }
+
+    interface IBrandRepository {
+         IBrandRepository <|-- IRepository<Models.Products.Brand>
+    }
+    class BrandRepository {
+        + BrandRepository(CandyDbContext context)
+    }
+    BrandRepository .up.|> IBrandRepository
+    BrandRepository ..> CandyDbContext : uses
+    BrandRepository ..> Models.Products.Brand : manages
+
+    interface ICategoryRepository {
+         ICategoryRepository <|-- IRepository<Models.Products.Category>
+    }
+     class CategoryRepository {
+        + CategoryRepository(CandyDbContext context)
+    }
+    CategoryRepository .up.|> ICategoryRepository
+    CategoryRepository ..> CandyDbContext : uses
+    CategoryRepository ..> Models.Products.Category : manages
 
     interface ICandyRepository {
-        ICandyRepository <|-- IRepository<Candy>
-        + Task<IEnumerable<Candy>> GetByCategoryIdAsync(int categoryId)
-        + Task<IEnumerable<Candy>> GetAllWithDetailsAsync()
-        + Task<Candy> GetByIdWithDetailsAsync(int id)
+         ICandyRepository <|-- IRepository<Models.Products.Candy>
+         + IList<Models.Products.Candy> GetAll(in Models.Products.Brand Brand);
+         + IList<Models.Products.Candy> GetAll(in Models.Products.Category category);
     }
-
-    class CandyRepository {
+     class CandyRepository {
         + CandyRepository(CandyDbContext context)
-        ' Implements ICandyRepository methods
     }
     CandyRepository .up.|> ICandyRepository
-    CandyRepository --> CandyDbContext : uses
+    CandyRepository ..> CandyDbContext : uses
+    CandyRepository ..> Models.Products.Candy : manages
 
     interface IUserRepository {
-         IUserRepository <|-- IRepository<User>
-        + Task<User> GetByUsernameAsync(string username)
-        + Task<User> GetUserOrdersAsync(int userId)
-        + Task<User> GetByIdAsync(int userId)
+         IUserRepository <|-- IRepository<Models.User>
+         + Models.User GetByUsername(string username);
     }
-
-     class UserRepository {
+    class UserRepository {
         + UserRepository(CandyDbContext context)
-        ' Implements IUserRepository methods
     }
     UserRepository .up.|> IUserRepository
-    UserRepository --> CandyDbContext : uses
+    UserRepository ..> CandyDbContext : uses
+    UserRepository ..> Models.User : manages
 
      interface IOrderRepository {
-         IOrderRepository <|-- IRepository<Order>
-         + Task<IEnumerable<Order>> GetUserOrdersAsync(int userId)
-         + Task AddOrderAsync(Order order)
-         + Task<Order> GetOrderByIdWithDetailsAsync(int orderId)
+         IOrderRepository <|-- IRepository<Models.Orders.Order>
+         + IEnumerable<Models.Orders.Order> GetOrdersByUserId(int userId);
      }
-
      class OrderRepository {
         + OrderRepository(CandyDbContext context)
-        ' Implements IOrderRepository methods
      }
      OrderRepository .up.|> IOrderRepository
-     OrderRepository --> CandyDbContext : uses
+     OrderRepository ..> CandyDbContext : uses
+     OrderRepository ..> Models.Orders.Order : manages
+
+      interface IOrderItemRepository {
+         IOrderItemRepository <|-- IRepository<Models.Orders.OrderItem>
+     }
+      class OrderItemRepository {
+        + OrderItemRepository(CandyDbContext context)
+     }
+     OrderItemRepository .up.|> IOrderItemRepository
+     OrderItemRepository ..> CandyDbContext : uses
+     OrderItemRepository ..> Models.Orders.OrderItem : manages
 
 }
-' Dependencies of DAL classes on Entities (mostly via DbSet and method signatures)
-CandyRepository ..> Candy
-UserRepository ..> User
-OrderRepository ..> Order
-OrderRepository ..> OrderItem
 
 @enduml

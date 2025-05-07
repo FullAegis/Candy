@@ -5,110 +5,72 @@ left to right direction
 title Data Transfer Objects (DTOs)
 
 package "05. DTOs (Data Transfer Objects)" {
-    class AddCandyRequestDto {
-        + string Name
-        + string Description
-        + decimal TaxFreePrice
-        + int StockQuantity
-        + int BrandId
-        + int CategoryId
+    package Products {
+        class Brand {
+            + int Id
+            + string Name
+        }
+        class Category {
+            + int Id
+            + string Name
+        }
+        class Candy {
+            + int Id
+            + string Name
+            + Brand Brand
+            + Category Category
+            + decimal PriceBeforeTax
+        }
+        Candy --> Brand
+        Candy --> Category
     }
 
-    class UpdateCandyRequestDto {
-        + string Name
-        + string Description
-        + decimal TaxFreePrice
-        + int StockQuantity
-        + int BrandId
-        + int CategoryId
+    package Users {
+        class UserLoginFormDTO {
+            + string Username
+            + string Password
+        }
+        class UserRegisterFormDTO {
+            + string Username
+            + string Password
+            + string Email
+        }
+        ' Assuming there's an AuthResponseDto returned by auth controller
+        class AuthResponseDto {
+             + string Token
+             + int UserId
+             + string Username
+             + string Role
+         }
     }
 
-    class CandyResponseDto {
-         + int Id
-         + string Name
-         + string Description
-         + decimal TaxFreePrice
-         + decimal PriceWithTax
-         + int StockQuantity
-         + string BrandName
-         + string CategoryName
-     }
+    package Orders {
+        class PlaceOrderRequestDto {
+             + List<OrderItemDto> OrderItems
+        }
 
-    class RegisterUserDto {
-        + string Username
-        + string Password
-        + string Email
-        + string Country
+        class OrderItemDto {
+             + int ProductId
+             + uint Quantity
+        }
+
+        class OrderResponseDto {
+             + int Id
+             + int UserId
+             + DateTime OrderDate
+             + string Status
+             + List<OrderItemResponseDto> OrderItems
+        }
+
+        class OrderItemResponseDto {
+             + int Id
+             + int ProductId
+             + string ProductName
+             + uint Quantity
+             + decimal UnitPrice
+        }
+        PlaceOrderRequestDto "*" --> "1" OrderItemDto : contains
+        OrderResponseDto "*" --> "1" OrderItemResponseDto : contains
     }
-
-    class LoginRequestDto {
-        + string Username
-        + string Password
-    }
-
-    class AuthResponseDto {
-        + string Token
-        + int UserId
-        + string Username
-        + string Role
-        + string Country
-    }
-
-    class UserResponseDto {
-        + int Id
-        + string Username
-        + string Email
-        + string FirstName
-        + string LastName
-        + string Role
-        + string Country
-    }
-
-    class UpdateUserDto {
-        + string Email
-        + string FirstName
-        + string LastName
-        + string Country
-    }
-
-    class PlaceOrderRequestDto {
-         + List<OrderItemDto> Items
-    }
-
-     class OrderItemDto {
-         + int CandyId
-         + int Quantity
-     }
-
-     class OrderResponseDto {
-         + int Id
-         + DateTime OrderDate
-         + string Status
-         + List<OrderItemResponseDto> Items
-         + decimal TotalTaxAmount
-         + decimal TotalPriceWithTax
-     }
-
-     class OrderItemResponseDto {
-         + int CandyId
-         + string CandyName
-         + int Quantity
-         + decimal UnitPrice
-         + decimal TaxRateApplied
-         + decimal ItemPriceWithTax
-     }
-
-     class OrderHistoryItemDto {
-         + int OrderId
-         + DateTime OrderDate
-         + string Status
-         + decimal TotalTaxAmount
-         + decimal TotalPriceWithTax
-         + int NumberOfItems
-     }
 }
-' Internal DTO relationships
-PlaceOrderRequestDto "*" --> "1" OrderItemDto : contains
-OrderResponseDto "*" --> "1" OrderItemResponseDto : contains
-
 @enduml

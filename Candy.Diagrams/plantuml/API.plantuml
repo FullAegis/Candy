@@ -2,80 +2,133 @@
 ' Set direction for the diagram
 left to right direction
 
-title API Layer (Controllers)
+title API Layer
 
-' Include necessary elements from other layers for context
-package "03. BLL (Interfaces Partial)" {
+package "03. BLL (Interfaces)" {
+    interface IBrandService { }
+    interface ICategoryService { }
     interface ICandyService { }
     interface IUserService { }
     interface IOrderService { }
 }
 
 package "05. DTOs" {
-    class AddCandyRequestDto { }
-    class UpdateCandyRequestDto { }
-    class CandyResponseDto { }
-    class RegisterUserDto { }
-    class LoginRequestDto { }
-    class AuthResponseDto { }
-    class UserResponseDto { }
-    class UpdateUserDto { }
-    class PlaceOrderRequestDto { }
-    class OrderResponseDto { }
-    class OrderHistoryItemDto { }
-    class OrderItemDto { } 
-    ' Used by PlaceOrderRequestDto
-    class OrderItemResponseDto { } 
-    ' Used by OrderResponseDto
+    package Products {
+        class Brand { }
+        class Category { }
+        class Candy { }
+    }
+    package Users {
+        class UserLoginFormDTO { }
+        class UserRegisterFormDTO { }
+    }
+    package Orders {
+        class PlaceOrderRequestDto { }
+        class OrderItemDto { }
+        class OrderResponseDto { }
+        class OrderItemResponseDto { }
+    }
+    Products.Candy --> Products.Brand
+    Products.Candy --> Products.Category
+    Orders.PlaceOrderRequestDto --> Orders.OrderItemDto
+    Orders.OrderResponseDto --> Orders.OrderItemResponseDto
 }
-
 
 package "04. API Layer" {
-    class CandyController {
-        ' Depends on ICandyService (Block 4)
-        + CandyController(ICandyService candyService)
-        + IActionResult GetAll()
-        + IActionResult GetById(int id)
-        + IActionResult Add([FromBody]AddCandyRequestDto candyDto)
-        + IActionResult Update(int id, [FromBody]UpdateCandyRequestDto candyDto)
-        + IActionResult Delete(int id)
-        + IActionResult GetByCategory(int categoryId)
+    package Controllers {
+        class AuthController {
+            + AuthController(IUserService userService)
+            + IActionResult Register(...)
+            + IActionResult Login(...)
+        }
+        AuthController ..> IUserService : uses
+        AuthController ..> Users.UserRegisterFormDTO
+        AuthController ..> Users.UserLoginFormDTO
+        ' Assuming AuthResponseDto is returned by Login, add dependency if needed
     }
-    CandyController ..> ICandyService : uses
-    CandyController ..> AddCandyRequestDto
-    CandyController ..> UpdateCandyRequestDto
-    CandyController ..> CandyResponseDto
 
+    package Controllers.Products {
+        class BrandsController {
+            + BrandsController(IBrandService brandService)
+            + IActionResult GetAll()
+            + IActionResult GetById(int id)
+            + IActionResult Create(...)
+            + IActionResult Update(...)
+            + IActionResult Delete(int id)
+        }
+        BrandsController ..> IBrandService : uses
+        BrandsController ..> Products.Brand
 
-    class UserController {
-        ' Depends on IUserService (Block 4)
-        + UserController(IUserService userService)
-        + IActionResult Register([FromBody]RegisterUserDto registerDto)
-        + IActionResult Login([FromBody]LoginRequestDto loginDto)
-        + IActionResult GetCurrentUser()
-        + IActionResult UpdateProfile([FromBody]UpdateUserDto updateDto)
-        + IActionResult GetOrderHistory()
-        + IActionResult UpdateCountry([FromBody]string country)
+        class CategoriesController {
+            + CategoriesController(ICategoryService categoryService)
+            + IActionResult GetAll()
+            + IActionResult GetById(int id)
+            + IActionResult Create(...)
+            + IActionResult Update(...)
+            + IActionResult Delete(int id)
+        }
+        CategoriesController ..> ICategoryService : uses
+        CategoriesController ..> Products.Category
+
+        class CandiesController {
+            + CandiesController(ICandyService candyService)
+            + IActionResult GetAll()
+            + IActionResult GetById(int id)
+            + IActionResult Create(...)
+            + IActionResult Update(...)
+            + IActionResult Delete(int id)
+            + IActionResult IncrementStock(...)
+            + IActionResult DecrementStock(...)
+            + IActionResult GetTaxFreePrice(...)
+        }
+        CandiesController ..> ICandyService : uses
+        CandiesController ..> Products.Candy
+        CandiesController ..> Products.Brand
+        CandiesController ..> Products.Category
     }
-    UserController ..> IUserService : uses
-    UserController ..> RegisterUserDto
-    UserController ..> LoginRequestDto
-    UserController ..> AuthResponseDto
-    UserController ..> UserResponseDto
-    UserController ..> UpdateUserDto
-    UserController ..> OrderHistoryItemDto
 
-
-    class OrderController {
-        ' Depends on IOrderService (Block 4)
-        + OrderController(IOrderService orderService)
-        + IActionResult PlaceOrder([FromBody]PlaceOrderRequestDto orderDto)
-        + IActionResult GetMyOrders()
-        + IActionResult UpdateStatus(int id, string status)
+    package Controllers.Orders {
+        class OrdersController {
+            + OrdersController(IOrderService orderService)
+            + IActionResult PlaceOrder(...)
+            + IActionResult GetMyOrders()
+            + IActionResult UpdateStatus(...)
+        }
+        OrdersController ..> IOrderService : uses
+        OrdersController ..> Orders.PlaceOrderRequestDto
+        OrdersController ..> Orders.OrderResponseDto
     }
-    OrderController ..> IOrderService : uses
-    OrderController ..> PlaceOrderRequestDto
-    OrderController ..> OrderResponseDto
 
+    package Mappers {
+        class ProductsMapper {
+            {static} + ToBll(Api.Products.Brand): Bll.Products.Brand
+            {static} + ToApi(Bll.Products.Brand): Api.Products.Brand
+            {static} + ToBll(Api.Products.Category): Bll.Products.Category
+            {static} + ToApi(Bll.Products.Category): Api.Products.Category
+            {static} + ToBll(Api.Products.Candy): Bll.Products.Candy
+            {static} + ToApi(Bll.Products.Candy): Api.Products.Candy
+        }
+        ProductsMapper ..> Products.Brand
+        ProductsMapper ..> Products.Category
+        ProductsMapper ..> Products.Candy
+        ProductsMapper ..> BLL.Models.Products.Brand
+        ProductsMapper ..> BLL.Models.Products.Category
+        ProductsMapper ..> BLL.Models.Products.Candy
+
+        class OrdersMapper {
+            {static} + ToBll(Api.Orders.PlaceOrderRequestDto): Bll.Orders.Order
+            {static} + ToBll(Api.Orders.OrderItemDto): Bll.Orders.OrderItem
+            {static} + ToApi(Bll.Orders.Order): Api.Orders.OrderResponseDto
+            {static} + ToApi(Bll.Orders.OrderItem): Api.Orders.OrderItemResponseDto
+        }
+        OrdersMapper ..> Orders.PlaceOrderRequestDto
+        OrdersMapper ..> Orders.OrderItemDto
+        OrdersMapper ..> Orders.OrderResponseDto
+        OrdersMapper ..> Orders.OrderItemResponseDto
+        OrdersMapper ..> BLL.Models.Orders.Order
+        OrdersMapper ..> BLL.Models.Orders.OrderItem
+    }
 }
+
+
 @enduml
