@@ -37,16 +37,20 @@ public class CandyConfig : IEntityTypeConfiguration<Dal::Candy> {
     builder.HasOne(c => c.Brand)
            .WithMany(b => b.Candies)
            .HasForeignKey(c => c.BrandId)
+           .HasConstraintName("FK_Candy_Brand_ID")
            .IsRequired()
            ;
     builder.HasOne(c => c.Category)
            .WithMany(cat => cat.Candies)
            .HasForeignKey(c => c.CategoryId)
+           .HasConstraintName("FK_Candy_Categories_ID")
            .IsRequired()
            ;
     builder.HasMany(c => c.OrderItems)
            .WithOne(oi => oi.Candy)
            .HasForeignKey(oi => oi.CandyId)
+           .HasConstraintName("FK_Candy_OrderItem_ID")
+           .IsRequired(false)
            ;
 #endregion
   }
