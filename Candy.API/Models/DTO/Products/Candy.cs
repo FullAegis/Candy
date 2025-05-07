@@ -15,5 +15,4 @@ public class Candy {
   
   [Required] [Range(1e-3, 1e+9)] // [0.001, 1_000_000_000]
   public required decimal PriceBeforeTax { get; set; }
-  
-}
+};

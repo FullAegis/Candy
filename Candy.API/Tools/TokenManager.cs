@@ -1,7 +1,7 @@
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.IdentityModel.Tokens;
 
 namespace Candy.Tools {
   public class TokenManager {
@@ -17,19 +17,21 @@ namespace Candy.Tools {
       _audience = config["jwt:audience"];
     }
     
-    public string GenerateJwt(dynamic user, int expirationDate = 1) {
+    public string GenerateJwt(dynamic user, ulong expirationDate = 1ul) {
       var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secret));
       var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha512);
 
-      var now = DateTime.Now;
-      var myclaims = new Claim[] {
-        new(ClaimTypes.Sid, user.Id.ToString())
-      , new(ClaimTypes.GivenName, user.Email ?? "NomInconnu")
-      , new(ClaimTypes.Expiration, now.AddHours(expirationDate).ToString(), ClaimValueTypes.DateTime)
+      
+      var expTime = DateTime.Now.AddHours(expirationDate);
+      var myclaims = new Claim[]
+      { new(ClaimTypes.Sid, user.Id.ToString())
+      , new(ClaimTypes.Email, user.Email as string ?? "INVALID_EMAIL")
+      , new(ClaimTypes.Expiration, expTime.ToString(), ClaimValueTypes.DateTime)
+      , new(ClaimTypes.Role, user.Role.ToString() ?? "Customer")
       };
 
       var token = new JwtSecurityToken( claims:             myclaims            
-                                      , expires:            now.AddHours(expirationDate)
+                                      , expires:            expTime
                                       , signingCredentials: credentials
                                       , audience:           _audience
                                       , issuer:             _issuer

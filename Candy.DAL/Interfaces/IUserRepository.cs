@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-
-namespace Candy.DAL.Interfaces {
 using Dal = Candy.DAL.Models;
+ 
+namespace Candy.DAL.Interfaces {
 
 public interface IUserRepository {
   void Register(in Dal::User user);
@@ -11,7 +11,6 @@ public interface IUserRepository {
   void Delete(in Dal::User user);
   void Delete(int id);
   string GetPassword([EmailAddress] string email);
-  
 };
 }
 

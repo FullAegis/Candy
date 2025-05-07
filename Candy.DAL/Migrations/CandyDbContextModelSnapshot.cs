@@ -183,27 +183,31 @@ namespace Candy.DAL.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(128)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(128)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.Property<short>("Role")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("smallint")
+                        .HasDefaultValue((short)0)
+                        .HasColumnName("Role");
 
-                    b.HasIndex("Email")
-                        .IsUnique()
-                        .HasDatabaseName("UK_Utilisateur_Email");
+                    b.HasKey("Id")
+                        .HasName("PK_User");
 
                     b.ToTable("User", (string)null);
                 });
