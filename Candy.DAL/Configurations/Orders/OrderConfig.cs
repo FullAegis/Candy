@@ -26,11 +26,13 @@ namespace Candy.DAL.Configurations.Orders {
       builder.HasOne(o => o.User) // [Order] 1 —— Belongs to —— 1 [User]
              .WithMany(u => u.Orders)
              .HasForeignKey(o => o.UserId)
+             .HasConstraintName("FK_User_Orders_UserId")
              .OnDelete(DeleteBehavior.Restrict)
              ;
       builder.HasMany(o => o.OrderItems) // [Order] 1 —— Contains —— * [OrderItem]
              .WithOne(oi => oi.Order)
              .HasForeignKey(oi => oi.OrderId)
+             .HasConstraintName("FK_OrderItem_Order_OrderId")
              .OnDelete(DeleteBehavior.Cascade)
              ;
     }

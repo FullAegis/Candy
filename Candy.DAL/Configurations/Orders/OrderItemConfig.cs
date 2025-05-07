@@ -6,8 +6,7 @@ namespace Candy.DAL.Configurations.Order {
   public class OrderItemConfig : IEntityTypeConfiguration<OrderItem> {
     public void Configure(EntityTypeBuilder<OrderItem> builder) {
       builder.ToTable(nameof(OrderItem))
-             ;
-      builder.HasKey(oi => oi.Id)
+             .HasKey(oi => oi.Id)
              ;
       builder.Property(oi => oi.Quantity)
              .IsRequired()
@@ -42,6 +41,7 @@ namespace Candy.DAL.Configurations.Order {
       builder.HasOne(oi => oi.Order)
              .WithMany(o => o.OrderItems)
              .HasForeignKey(oi => oi.OrderId)
+             .HasConstraintName("FK_Order_OrderItem_OrderId")
              .OnDelete(DeleteBehavior.Cascade) // Delete OrderItem when Order deleted
              ;
 
@@ -49,6 +49,7 @@ namespace Candy.DAL.Configurations.Order {
       builder.HasOne(oi => oi.Candy)
              .WithMany(c => c.OrderItems)
              .HasForeignKey(oi => oi.CandyId)
+             .HasConstraintName("FK_Candy_OrderItem_CandyId")
              .OnDelete(DeleteBehavior.Restrict)
              ;
     }
