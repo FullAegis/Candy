@@ -21,8 +21,10 @@ namespace Candy.DAL.Models.Products {
     [Required] public int CategoryId { get; set; }
 #endregion
 #region Navigation Properties
-    [ForeignKey("BrandId")] public Brand Brand { get; set; } 
-    [ForeignKey("CategoryId")] public Category Category { get; set; }
+    [ForeignKey("BrandId")] 
+    public Brand Brand { get; set; } 
+    [ForeignKey("CategoryId")] 
+    public Category Category { get; set; }
     public ICollection<OrderItem> OrderItems { get; set; }
 #endregion
   };
