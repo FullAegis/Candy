@@ -25,6 +25,7 @@ namespace Candy.DAL.Configurations {
              .HasColumnType("nvarchar(128)")
              ;
       builder.Property(u => u.Role)
+             .HasColumnName("Role")
              .HasColumnType("smallint")
              .HasDefaultValue(UserRole.Customer)
              ;
