@@ -1,8 +1,10 @@
 using Candy.API.Models.DTO.Users;
 using Candy.BLL.Interfaces;
 using Candy.BLL.Services;
+using Candy.DAL.Models;
 using Candy.Mappers;
 using Candy.Tools;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
@@ -44,4 +46,19 @@ public class AuthController(IUserService userService, TokenManager tokenManager)
       return BadRequest(e.Message);
     }
   }
+  
+#if DEBUG
+  [HttpGet(nameof(TestRouteConnected))]
+  [Authorize]
+  public IActionResult TestRouteConnected() => Ok("Access Granted Regardless of Role.");
+  
+  [HttpGet(nameof(TestRouteUser))]
+  [Authorize(Roles = nameof(UserRole.Customer))]
+  public IActionResult TestRouteUser() => Ok("Access Granted Customer");
+  
+  [HttpGet(nameof(TestRouteMod))]
+  [Authorize(Roles = nameof(UserRole.Admin))]
+  public IActionResult TestRouteMod() => Ok("Admin");
+#endif
+  
 }
