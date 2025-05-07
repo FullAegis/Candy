@@ -9,6 +9,7 @@ public static class UserMapper {
   , LastName = user.LastName
   , Email = user.Email
   , Password = user.Password
+  , Role = user.Role
   };
   
   public static Dal::User ToDal(this Bll::User user) => new Dal::User
@@ -17,6 +18,7 @@ public static class UserMapper {
   , LastName = user.LastName
   , Email = user.Email
   , Password = user.Password
+  , Role = user.Role
   };
 };
 }

@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using Candy.DAL.Models.Orders;
 
@@ -23,6 +24,11 @@ namespace Candy.DAL.Models {
     [Required]
     [PasswordPropertyText]
     public required string Password { get; set; }
+    
+    [Required]
+    [Column(name: "Role", TypeName = "smallint")]
+    public required UserRole Role { get; set; } = UserRole.Customer;
+    
     
     // [User] 1 —— Places ——> * [Order]
     public ICollection<Order> Orders { get; set; }
