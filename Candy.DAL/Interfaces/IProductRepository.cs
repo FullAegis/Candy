@@ -8,6 +8,6 @@ public interface IProductRepository <T> : IRepository<T> where T : class {
 public interface ICategoryRepository : IProductRepository<Dal::Category>;
 public interface IBrandRepository    : IProductRepository<Dal::Brand>;
 public interface ICandyRepository    : IProductRepository<Dal::Candy> {
-  List<Dal::Candy> GetAll(Dal::Category category);
-  List<Dal::Candy> GetAll(Dal::Brand brand);
+  IList<Dal::Candy> GetAll(Dal::Category category);
+  IList<Dal::Candy> GetAll(Dal::Brand brand);
 };

@@ -7,7 +7,7 @@ namespace Candy.DAL.Repositories.Orders;
 public class OrderRepository(CandyDbContext context) : IOrderRepository {
   private readonly CandyDbContext _context = context;
   
-  public List<Order> GetAll() => _context.Orders.ToList();
+  public IList<Order> GetAll() => _context.Orders.ToList();
 
   public Order Get(int id) {
     var o = _context.Orders.FirstOrDefault(x => x.Id == id);
