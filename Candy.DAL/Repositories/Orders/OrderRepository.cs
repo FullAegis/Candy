@@ -7,7 +7,7 @@ namespace Candy.DAL.Repositories.Orders;
 public class OrderRepository(CandyDbContext context) : IOrderRepository {
   private readonly CandyDbContext _context = context;
   
-  public IList<Order> GetAll() => _context.Orders.ToList();
+  public List<Order> GetAll() => _context.Orders.ToList();
 
   public Order Get(int id) {
     var o = _context.Orders.FirstOrDefault(x => x.Id == id);
@@ -42,7 +42,7 @@ public class OrderRepository(CandyDbContext context) : IOrderRepository {
   public void Delete(int id) {
     Delete(Get(id));
   }
-
+  
   public List<Order> GetUserOrders(int userId) {
     var userOrders = _context.Orders
                              .Where(o => o.UserId == userId)

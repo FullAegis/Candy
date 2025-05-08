@@ -9,81 +9,107 @@ namespace Candy.API.Controllers.Products;
 
 [ApiController]
 [Route("[controller]")]
-public class BrandsController(IBrandService brandService) : ControllerBase
-{
+public class BrandsController(IBrandService brandService) : ControllerBase {
   private readonly IBrandService _brandService = brandService;
 
   [HttpGet]
-  public IActionResult GetAll()
-  {
-    var brands = _brandService.GetAll();
-    return Ok(brands.Select(b => b.ToApi()));
-  }
-
+  public IActionResult GetAll() => Ok(_brandService.GetAll().ToDto());
+  
   [HttpGet("{id:int}")]
-  public IActionResult GetById(int id)
-  {
-    var brand = _brandService.Get(id);
-    if (brand == null)
-    {
-      return NotFound();
+  public IActionResult GetById(int id) {
+    try {
+      var brand = _brandService.Get(id);
+      return Ok(brand.ToDto());
+    } catch (Exception e) {
+      return NotFound(e.Message);
     }
-    return Ok(brand.ToApi());
   }
+  //
+  // [HttpPost]
+  // [Authorize(Roles = "Admin")]
+  // public ActionResult Create(Api::Brand brandDto) {
+  //   if (ModelState.IsValid is false) {
+  //     return BadRequest(ModelState);
+  //   }
+  //   try {
+  //     _brandService.Create(brandDto.ToBll());
+  //     return CreatedAtAction(nameof(GetById), new { id = brandDto.Id }, brandDto);
+  //   } catch (Exception ex) {
+  //     return BadRequest(ex.Message);
+  //   }
+  // }
 
   [HttpPost]
   [Authorize(Roles = "Admin")]
-  public IActionResult Create(Api::Brand brandDto)
-  {
-    if (!ModelState.IsValid)
-    {
+  public async Task<IActionResult> CreateAsync(Api::Brand brandDto) {
+    if (ModelState.IsValid is false) {
       return BadRequest(ModelState);
     }
-    try
-    {
-      _brandService.Create(brandDto.ToBll());
+    var brandBll = await Task.Run(() => brandDto.ToBll());
+    try {
+      await Task.Run(() => _brandService.Create(brandBll));
       return CreatedAtAction(nameof(GetById), new { id = brandDto.Id }, brandDto);
-    }
-    catch (Exception ex)
-    {
+    } catch (Exception ex) {
       return BadRequest(ex.Message);
     }
   }
+
+  
+  // [HttpPut("{id:int}")]
+  // [Authorize(Roles = "Admin")]
+  // public IActionResult Update(int id, Api::Brand brandDto) {
+  //   if (ModelState.IsValid is false) {
+  //     return BadRequest(ModelState);
+  //   }
+  //
+  //   if (id != brandDto.Id) {
+  //     return BadRequest("ID mismatch");
+  //   }
+  //
+  //   try {
+  //     _brandService.Update(id, brandDto.ToBll());
+  //     return NoContent();
+  //   } catch (Exception ex) {
+  //     return BadRequest(ex.Message);
+  //   }
+  // }
 
   [HttpPut("{id:int}")]
   [Authorize(Roles = "Admin")]
-  public IActionResult Update(int id, Api::Brand brandDto)
-  {
-    if (!ModelState.IsValid)
-    {
+  public async Task<IActionResult> UpdateAsync(int id, Api::Brand brandDto) {
+    if (ModelState.IsValid is false) {
       return BadRequest(ModelState);
-    }
-    if (id != brandDto.Id)
-    {
+    } else if (id != brandDto.Id) {
       return BadRequest("ID mismatch");
     }
-    try
-    {
-      _brandService.Update(id, brandDto.ToBll());
+
+    var brandBll = await Task.Run(() => brandDto.ToBll());
+    try {
+      _brandService.Update(id, brandBll);
       return NoContent();
-    }
-    catch (Exception ex)
-    {
+    } catch (Exception ex) {
       return BadRequest(ex.Message);
     }
   }
-
+  
+  // [HttpDelete("{id:int}")]
+  // [Authorize(Roles = "Admin")]
+  // public IActionResult Delete(int id) {
+  //   try {
+  //     _brandService.Remove(id);
+  //     return NoContent();
+  //   } catch (Exception ex) {
+  //     return BadRequest(ex.Message);
+  //   }
+  // }
+  
   [HttpDelete("{id:int}")]
   [Authorize(Roles = "Admin")]
-  public IActionResult Delete(int id)
-  {
-    try
-    {
-      _brandService.Remove(id);
+  public async Task<IActionResult> DeleteAsync(int id) {
+    try {
+      await Task.Run(() => _brandService.Remove(id));
       return NoContent();
-    }
-    catch (Exception ex)
-    {
+    } catch (Exception ex) {
       return BadRequest(ex.Message);
     }
   }

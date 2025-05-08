@@ -1,87 +1,71 @@
-using Candy.BLL.Interfaces;
-using Microsoft.AspNetCore.Mvc;
-using ApiOrders = Candy.API.Models.DTO.Orders;
-using Candy.API.Mappers;
-using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
+using Candy.BLL.Interfaces;
+using Candy.API.Mappers;
+using Api = Candy.API.Models.DTO.Orders;
+using Role = Candy.DAL.Models.UserRole;
 namespace Candy.API.Controllers.Orders;
 
 [ApiController]
 [Route("[controller]")]
-public class OrdersController(IOrderService orderService) : ControllerBase
-{
+public class OrdersController(IOrderService orderService) : ControllerBase {
   private readonly IOrderService _orderService = orderService;
 
   [HttpPost]
-  [Authorize]
-  public IActionResult PlaceOrder([FromBody] ApiOrders::PlaceOrderRequestDto orderRequest)
-  {
-    if (!ModelState.IsValid)
-    {
+  [Authorize(Roles = $"{nameof(Role.Admin)}, {nameof(Role.Customer)}")]
+  public async Task<IActionResult> PlaceOrder([FromBody] Api::PlaceOrderRequestDto orderRequest) {
+    if (ModelState.IsValid is false) {
       return BadRequest(ModelState);
     }
-
-    // Get user ID from claims
+    
     var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
-    if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
-    {
-      return Unauthorized(); // Or a more specific error if user is authenticated but claim is missing/invalid
+
+    if (userIdClaim is null 
+    || int.TryParse(userIdClaim.Value, out int userId) is false) {
+      return Unauthorized();
     }
 
-    try
-    {
+    try {
       var order = orderRequest.ToBll();
       order.UserId = userId; // Set user ID from authenticated user
-      _orderService.PlaceOrder(order);
-      // Assuming PlaceOrder populates the order object with Id and details
+      await Task.Run(() => _orderService.PlaceOrderAsync(order));
       return CreatedAtAction(nameof(GetMyOrders), new { userId = userId }, order.ToApi());
-    }
-    catch (Exception ex)
-    {
+    } catch (Exception ex) {
       return BadRequest(ex.Message);
     }
   }
 
   [HttpGet("my")]
-  [Authorize]
-  public IActionResult GetMyOrders()
-  {
-    // Get user ID from claims
+  [Authorize(Roles = $"{nameof(Role.Admin)}, {nameof(Role.Customer)}")]
+  public async Task<IActionResult> GetMyOrders() {
     var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
-    if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
-    {
+
+    if (userIdClaim is null 
+    || int.TryParse(userIdClaim.Value, out int userId) is false) {
       return Unauthorized();
     }
 
-    try
-    {
-      var orders = _orderService.GetOrdersByUserId(userId);
+    try {
+      var orders = await Task.Run(() => _orderService.GetAll(userId: userId));
       return Ok(orders.Select(o => o.ToApi()));
-    }
-    catch (Exception ex)
-    {
+    } catch (Exception ex) {
       return BadRequest(ex.Message);
     }
   }
 
   [HttpPut("{id:int}/status")]
-  [Authorize(Roles = "Admin")]
-  public IActionResult UpdateStatus(int id, [FromBody] string status)
-  {
-    if (string.IsNullOrEmpty(status))
-    {
+  [Authorize(Roles = nameof(Role.Admin))]
+  public async Task<IActionResult> UpdateStatus(int id, [FromBody] string status) {
+    if (string.IsNullOrEmpty(status)) {
       return BadRequest("Status cannot be empty.");
     }
 
-    try
-    {
-      // Assuming the BLL service handles status parsing and validation
-      _orderService.UpdateOrderStatus(id, status);
+    try {
+      await Task.Run(() => _orderService.UpdateStatus(id, status));
       return NoContent();
-    }
-    catch (Exception ex)
-    {
+    } catch (Exception ex) {
       return BadRequest(ex.Message);
     }
   }

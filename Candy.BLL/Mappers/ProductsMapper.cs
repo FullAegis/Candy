@@ -35,4 +35,9 @@ public static class ProductsMapper {
   , PriceBeforeTax = candy.PriceBeforeTax
   };
 #endregion
+
+#region Collections
+  
+
+#endregion
 };

@@ -43,3 +43,7 @@ This document outlines the coding style conventions used in this project.
 *   **Repository Pattern:** Implement the Repository pattern for data access. Define repository interfaces in the `Interfaces` subfolder (e.g., `IUserRepository`) and their implementations in the `Repositories` subfolder (e.g., `UserRepository`).
 *   **Fluent API Chaining:** When using Entity Framework's Fluent API for configuration, chain method calls with clear indentation for readability (typically 4 spaces for the chained calls).
 *   **Data Validation Attributes:** Use data validation attributes (e.g., `[EmailAddress]`) on parameters in repository interfaces where appropriate for clarity and intent.
+
+---
+
+*This guide is based on observed patterns. Please update it as conventions evolve.*
