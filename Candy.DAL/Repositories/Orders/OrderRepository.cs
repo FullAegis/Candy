@@ -42,7 +42,7 @@ public class OrderRepository(CandyDbContext context) : IOrderRepository {
   public void Delete(int id) {
     Delete(Get(id));
   }
-
+  
   public List<Order> GetUserOrders(int userId) {
     var userOrders = _context.Orders
                              .Where(o => o.UserId == userId)

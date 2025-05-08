@@ -7,10 +7,12 @@ title Business Logic Layer (BLL)
 ' Include necessary elements from other layers for context
 package "02. DAL (Interfaces Partial)" {
     interface IRepository<T> { }
-    interface ICandyRepository {
-    ICandyRepository <|-- IRepository<Candy> }
-    interface IUserRepository { IUserRepository <|-- IRepository<User> }
-    interface IOrderRepository { IOrderRepository <|-- IRepository<Order> }
+    interface IBrandRepository { IBrandRepository <|-- IRepository<Models.Products.Brand> }
+    interface ICategoryRepository { ICategoryRepository <|-- IRepository<Models.Products.Category> }
+    interface ICandyRepository { ICandyRepository <|-- IRepository<Models.Products.Candy> }
+    interface IUserRepository { IUserRepository <|-- IRepository<Models.User> }
+    interface IOrderRepository { IOrderRepository <|-- IRepository<Models.Orders.Order> }
+    interface IOrderItemRepository { IOrderItemRepository <|-- IRepository<Models.Orders.OrderItem> }
 }
 
 package "06. Cross-Cutting Concerns (Interfaces Partial)" {
@@ -18,98 +20,105 @@ package "06. Cross-Cutting Concerns (Interfaces Partial)" {
     interface ITaxService { }
 }
 
-package "05. DTOs (Partial)" {
-    class AddCandyRequestDto { }
-    class UpdateCandyRequestDto { }
-    class CandyResponseDto { }
-    class RegisterUserDto { }
-    class LoginRequestDto { }
-    class AuthResponseDto { }
-    class UserResponseDto { }
-    class UpdateUserDto { }
-    class PlaceOrderRequestDto { }
-    class OrderResponseDto { }
-    class OrderHistoryItemDto { }
-    class Brand { } 
-    ' Needed for IRepository<Brand> dependency
-    class Category { } 
-    ' Needed for IRepository<Category> dependency
-    class Candy { } 
-    ' Needed for IRepository<Candy> dependency
-    class User { } 
-    ' Needed for IRepository<User> dependency, IJwtService
-    class Order { } 
-    ' Needed for IRepository<Order> dependency
-}
-
-
 package "03. BLL (Business Logic Layer)" {
-    interface ICandyService {
-        + Task<IEnumerable<CandyResponseDto>> GetAllCandiesAsync(int userId)
-        + Task<CandyResponseDto> GetCandyByIdAsync(int id, int userId)
-        + Task<CandyResponseDto> AddCandyAsync(AddCandyRequestDto candyDto)
-        + Task UpdateCandyAsync(int id, UpdateCandyRequestDto candyDto)
-        + Task DeleteCandyAsync(int id)
-        + Task<IEnumerable<CandyResponseDto>> GetCandiesByCategoryAsync(int categoryId, int userId)
+    package Models.Products {
+        class Brand { }
+        class Category { }
+        class Candy { }
+    }
+    package Models.Orders {
+        class Order { }
+        class OrderItem { }
+    }
+    package Models {
+        class User { }
     }
 
+    interface IBrandService {
+        + IEnumerable<Models.Products.Brand> GetAll()
+        + Models.Products.Brand Get(int id)
+        + void Create(in Models.Products.Brand brand)
+        + void Update(int id, in Models.Products.Brand brand)
+        + void Remove(int id)
+        + void Remove(in Models.Products.Brand brand)
+    }
+
+    interface ICategoryService {
+        + IEnumerable<Models.Products.Category> GetAll()
+        + Models.Products.Category Get(int id)
+        + void Create(in Models.Products.Category category)
+        + void Update(int id, in Models.Products.Category category)
+        + void Remove(int id)
+        + void Remove(in Models.Products.Category category)
+    }
+
+    interface ICandyService {
+        + IEnumerable<Models.Products.Candy> GetAll()
+        + Models.Products.Candy Get(int id)
+        + void Create(in Models.Products.Candy product)
+        + void Update(int id, in Models.Products.Candy product)
+        + void Remove(int id)
+        + void Remove(in Models.Products.Candy product)
+        + IList<Models.Products.Candy> GetAll(in Models.Products.Brand Brand)
+        + IList<Models.Products.Candy> GetAll(in Models.Products.Category category)
+        + void IncrementStock(int productId, uint newStock)
+        + void DecrementStock(int productId, uint quantity = 1)
+        + decimal TaxFreePrice(in Models.Products.Candy product)
+        + decimal TaxFreePrice(int id)
+    }
+
+    interface IUserService {
+        + Models.User Register(in Models.User user)
+        + Models.User Login(string username, string password)
+        + Models.User GetUserById(int id)
+    }
+
+    interface IOrderService {
+        + void PlaceOrder(in Models.Orders.Order order)
+        + IEnumerable<Models.Orders.Order> GetOrdersByUserId(int userId)
+        + void UpdateOrderStatus(int orderId, string status)
+    }
+
+    class BrandService {
+        + BrandService(IBrandRepository brandRepository)
+    }
+    BrandService .up.|> IBrandService
+    BrandService ..> IBrandRepository : uses
+
+    class CategoryService {
+        + CategoryService(ICategoryRepository categoryRepository)
+    }
+    CategoryService .up.|> ICategoryService
+    CategoryService ..> ICategoryRepository : uses
+
     class CandyService {
-        ' Depends on ICandyRepository, IRepository<Brand>, IRepository<Category>, ITaxService
-        + CandyService(ICandyRepository candyRepository, IRepository<Brand> brandRepository, IRepository<Category> categoryRepository, ITaxService taxService)
-        ' Implements ICandyService methods
+        + CandyService(ICandyRepository candyRepository, IBrandRepository brandRepository, ICategoryRepository categoryRepository, ITaxService taxService)
     }
     CandyService .up.|> ICandyService
     CandyService ..> ICandyRepository : uses
-    CandyService ..> IRepository : uses
+    CandyService ..> IBrandRepository : uses
+    CandyService ..> ICategoryRepository : uses
     CandyService ..> ITaxService : uses
-    CandyService ..> CandyResponseDto : uses
-    CandyService ..> AddCandyRequestDto : uses
-    CandyService ..> UpdateCandyRequestDto : uses
-
-
-    interface IUserService {
-        + Task<AuthResponseDto> RegisterAsync(RegisterUserDto registerDto)
-        + Task<AuthResponseDto> LoginAsync(LoginRequestDto loginDto)
-        + Task<UserResponseDto> GetCurrentUserAsync(int userId)
-        + Task UpdateUserProfileAsync(int userId, UpdateUserDto updateDto)
-        + Task<IEnumerable<OrderHistoryItemDto>> GetUserOrderHistoryAsync(int userId)
-        + Task UpdateUserCountryAsync(int userId, string country)
-    }
 
     class UserService {
-        ' Depends on IUserRepository, IJwtService
         + UserService(IUserRepository userRepository, IJwtService jwtService)
-        ' Implements IUserService methods
     }
     UserService .up.|> IUserService
     UserService ..> IUserRepository : uses
     UserService ..> IJwtService : uses
-    UserService ..> RegisterUserDto : uses
-    UserService ..> LoginRequestDto : uses
-    UserService ..> AuthResponseDto : uses
-    UserService ..> UserResponseDto : uses
-    UserService ..> UpdateUserDto : uses
-    UserService ..> OrderHistoryItemDto : uses
 
-
-    interface IOrderService {
-        + Task<OrderResponseDto> PlaceOrderAsync(PlaceOrderRequestDto orderDto, int userId)
-        + Task<IEnumerable<OrderResponseDto>> GetUserOrdersAsync(int userId)
-        + Task UpdateOrderStatusAsync(int orderId, string newStatus)
+    class OrderService {
+        + OrderService(IOrderRepository orderRepository, IOrderItemRepository orderItemRepository, ICandyRepository candyRepository, IUserRepository userRepository)
     }
+    OrderService .up.|> IOrderService
+    OrderService ..> IOrderRepository : uses
+    OrderService ..> IOrderItemRepository : uses
+    OrderService ..> ICandyRepository : uses
+    OrderService ..> IUserRepository : uses
 
-     class OrderService {
-        ' Depends on IOrderRepository, ICandyRepository, IUserRepository, ITaxService
-        + OrderService(IOrderRepository orderRepository, ICandyRepository candyRepository, IUserRepository userRepository, ITaxService taxService)
-        ' Implements IOrderService methods
-     }
-     OrderService .up.|> IOrderService
-     OrderService ..> IOrderRepository : uses
-     OrderService ..> ICandyRepository : uses
-     OrderService ..> IUserRepository : uses
-     OrderService ..> ITaxService : uses
-     OrderService ..> PlaceOrderRequestDto : uses
-     OrderService ..> OrderResponseDto : uses
+    Models.Orders.Order "*" --> "1" Models.Orders.OrderItem : contains
+    Models.Orders.OrderItem --> Models.Products.Candy : relates to
+    Models.Orders.Order --> Models.User : placed by
 
 }
 
