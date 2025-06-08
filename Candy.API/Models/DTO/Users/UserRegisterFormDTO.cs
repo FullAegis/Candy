@@ -14,9 +14,6 @@ public class UserRegisterFormDTO {
   [Required]
   [PasswordPropertyText]
   [StringLength(maximumLength: 72, MinimumLength = 8)]
-  public required string Password {
-    get => _password;
-    set => _password = BCrypt.Net.BCrypt.HashPassword(value);
-  }
+  public required string Password { get; set; }
 };
 }

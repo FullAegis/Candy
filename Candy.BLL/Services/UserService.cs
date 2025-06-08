@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Runtime;
+using BCrypt.Net;
+
 using Candy.BLL.Mappers;    // Bll::User::ToDal()
 using Candy.BLL.Interfaces; // IUserService
 using Candy.DAL.Interfaces; // IUserRepository
@@ -32,7 +34,11 @@ public class UserService(IUserRepository users) : IUserService {
   }
 
   public Bll::User Get(int id) => _users.Get(id).ToBll();
-  public void Register(in Bll::User user) => _users.Register(user.ToDal());
+  public void Register(in Bll::User user) {
+    var dalUser = user.ToDal();
+    dalUser.Password = BCrypt.HashPassword(user.Password);
+    _users.Register(dalUser);
+  }
   public void Update(int id, in Bll::User user) => _users.Update(id, user.ToDal());
   public void Delete(int userId) => _users.Delete(userId);
   public void Delete(in Bll::User user) => _users.Delete(user.Id);
