@@ -45,7 +45,7 @@ public class BrandsController(IBrandService brandService) : ControllerBase {
     if (ModelState.IsValid is false) {
       return BadRequest(ModelState);
     }
-    var brandBll = await Task.Run(() => brandDto.ToBll());
+    var brandBll = await Task.Run(brandDto.ToBll);
     try {
       await Task.Run(() => _brandService.Create(brandBll));
       return CreatedAtAction(nameof(GetById), new { id = brandDto.Id }, brandDto);
@@ -84,7 +84,7 @@ public class BrandsController(IBrandService brandService) : ControllerBase {
     }
 
     try {
-      _brandService.Update(id, await Task.Run(() => brandDto.ToBll()));
+      _brandService.Update(id, await Task.Run(brandDto.ToBll));
       return NoContent();
     } catch (Exception ex) {
       return BadRequest(ex.Message);
