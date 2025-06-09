@@ -2,7 +2,6 @@ using Bll = Candy.BLL.Models.Orders;
 using Api = Candy.API.Models.DTO.Orders;
 
 namespace Candy.API.Mappers;
-
 public static class OrdersMapper {
   public static Bll::Order ToBll(this Api::PlaceOrderRequestDto orderDto)
   => new Bll::Order { OrderItems = orderDto.OrderItems.Select(oi => oi.ToBll()).ToList() };

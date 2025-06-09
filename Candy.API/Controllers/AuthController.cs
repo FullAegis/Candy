@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 using Api = Candy.API.Models.DTO;
 namespace Candy.Controllers;
-
 [ApiController]
 [Route("[controller]")]
 public class AuthController(IUserService userService, TokenManager tokenManager) : ControllerBase {
