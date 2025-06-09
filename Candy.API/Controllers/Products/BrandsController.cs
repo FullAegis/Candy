@@ -83,9 +83,8 @@ public class BrandsController(IBrandService brandService) : ControllerBase {
       return BadRequest("ID mismatch");
     }
 
-    var brandBll = await Task.Run(() => brandDto.ToBll());
     try {
-      _brandService.Update(id, brandBll);
+      _brandService.Update(id, await Task.Run(() => brandDto.ToBll()));
       return NoContent();
     } catch (Exception ex) {
       return BadRequest(ex.Message);
