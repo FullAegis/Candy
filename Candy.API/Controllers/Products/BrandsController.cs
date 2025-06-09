@@ -6,7 +6,6 @@ using Candy.API.Mappers;
 
 using Bll = Candy.BLL.Models.Products;
 using Api = Candy.API.Models.DTO.Products;
-
 namespace Candy.API.Controllers.Products;
 [ApiController]
 [Route("[controller]")]

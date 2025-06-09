@@ -1,16 +1,20 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Text;
+
+using Candy.Tools;
 using Candy.BLL.Interfaces;
 using Candy.BLL.Services;
+
+#region Dal Imports
 using Candy.DAL;
 using Candy.DAL.Interfaces;
 using Candy.DAL.Interfaces.Orders;
 using Candy.DAL.Repositories;
 using Candy.DAL.Repositories.Orders;
 using Candy.DAL.Repositories.Products;
-using Candy.Tools;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
+#endregion
 
 using Oapi = Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);

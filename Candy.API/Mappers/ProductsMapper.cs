@@ -2,9 +2,6 @@ using Bll = Candy.BLL.Models.Products;
 using Dto = Candy.API.Models.DTO.Products;
 
 namespace Candy.API.Mappers;
-using Bll = Candy.BLL.Models.Products;
-using Dto = Candy.API.Models.DTO.Products;
-
 public static class ProductsMapper {
 #region Brand
   public static Bll::Brand ToBll(this Dto::Brand brand)
