@@ -1,12 +1,13 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+
 using Candy.API.Models.DTO.Users;
 using Candy.BLL.Interfaces;
 using Candy.BLL.Services;
 using Candy.DAL.Models;
 using Candy.Mappers;
 using Candy.Tools;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 using Api = Candy.API.Models.DTO;
 namespace Candy.Controllers;
