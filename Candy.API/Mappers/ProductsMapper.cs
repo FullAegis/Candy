@@ -1,3 +1,6 @@
+using Bll = Candy.BLL.Models.Products;
+using Dto = Candy.API.Models.DTO.Products;
+
 namespace Candy.API.Mappers;
 using Bll = Candy.BLL.Models.Products;
 using Dto = Candy.API.Models.DTO.Products;
