@@ -2,11 +2,8 @@ using Candy.BLL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Bll = Candy.BLL.Models.Products;
 using Api = Candy.API.Models.DTO.Products;
-using Candy.API.Mappers;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Candy.API.Controllers.Products;
-
 [ApiController]
 [Route("[controller]")]
 public class CandiesController(ICandyService candyService) : ControllerBase {

@@ -7,7 +7,6 @@ using Api = Candy.API.Models.DTO.Products;
 using Bll = Candy.BLL.Models.Products;
 
 namespace Candy.API.Controllers.Products;
-
 [ApiController]
 [Route("[controller]")]
 public class CategoriesController(ICategoryService categoryService) : ControllerBase {

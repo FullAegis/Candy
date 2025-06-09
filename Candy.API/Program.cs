@@ -52,7 +52,6 @@ services.AddSwaggerGen(static c => {
 #region BLL.Services
 services.AddScoped<IUserService, UserService>();
 #endregion
-
 #region DAL.Repositories.Users
 services.AddScoped<IUserRepository, UserRepository>();
 #endregion
