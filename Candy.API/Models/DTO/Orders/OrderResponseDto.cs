@@ -1,7 +1,5 @@
 namespace Candy.API.Models.DTO.Orders;
-
-public class OrderResponseDto
-{
+public class OrderResponseDto {
   public int Id { get; set; }
   public int UserId { get; set; }
   public DateTime OrderDate { get; set; }
