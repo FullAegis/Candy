@@ -1,8 +1,7 @@
 using Candy.DAL.Models;
-
-namespace Candy.DAL.Repositories {
 using Candy.DAL.Interfaces;
-  
+
+namespace Candy.DAL.Repositories;
 public class UserRepository(CandyDbContext context) : IUserRepository {
   private readonly CandyDbContext _context = context;
   
@@ -47,5 +46,3 @@ public class UserRepository(CandyDbContext context) : IUserRepository {
     return user.Password;
   }
 };
-}
-
