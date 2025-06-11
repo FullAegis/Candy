@@ -13,8 +13,8 @@ namespace Candy.Tools {
     public TokenManager(IConfiguration config) {
       _config = config;
       _secret = _config["jwt:key"];
-      _issuer = config["jwt:issuer"];
-      _audience = config["jwt:audience"];
+      _issuer = _config["jwt:issuer"];
+      _audience = _config["jwt:audience"];
     }
     
     public string GenerateJwt(dynamic user, ulong expirationDate = 1ul) {
