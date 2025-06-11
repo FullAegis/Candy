@@ -5,7 +5,6 @@ using Candy.DAL.Interfaces;
 using Candy.DAL.Interfaces.Orders;
 
 namespace Candy.BLL.Services.Orders;
-
 public class OrderService(IOrderRepository orderRepository, IUserRepository userRepository)
   : IOrderService
 {
