@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -6,6 +7,7 @@ using System.Text;
 using Candy.Tools;
 using Candy.BLL.Interfaces;
 using Candy.BLL.Services;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 
 #region Dal Imports
 using Candy.DAL;
@@ -25,7 +27,7 @@ services.AddControllers();
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen(static c => {
   // General Information for Swagger API
-  c.SwaggerDoc("v1", new Oapi::OpenApiInfo { Title = "Candy Shop", Version = "v1.1.1" });
+  c.SwaggerDoc("v1", new Oapi::OpenApiInfo { Title = "Candy Shop", Version = "v1.2.0" });
 
   var securitySchemeName = "BearerSecDef";
   // Security Scheme of type bearer for Swagger API
@@ -95,6 +97,14 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     };
   });
 
+services.AddCors(options
+  => options.AddPolicy("AllowSpecificOrigin", builder
+    => builder.WithOrigins("http://localhost:4200")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+  )
+);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -104,6 +114,8 @@ if (app.Environment.IsDevelopment()) {
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowSpecificOrigin");
 
 app.UseAuthentication();
 app.UseAuthorization();
