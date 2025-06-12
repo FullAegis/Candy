@@ -4,7 +4,7 @@ import { Observable, throwError, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Order, OrderItem } from '../models/order.model'; // Assuming OrderItem might be part of placeOrder payload
 import { Cart } from '../models/cart.model'; // Needed for placeOrder
-import { AuthService } from './auth/auth'; // For getting the token
+import { AuthService } from './auth/auth.service'; // For getting the token
 
 @Injectable({
   providedIn: 'root'

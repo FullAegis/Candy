@@ -3,14 +3,14 @@ import { LoginComponent } from './components/auth/login/login.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { ProductListComponent } from './components/product/product-list/product-list.component';
 import { ProductDetailComponent } from './components/product/product-detail/product-detail.component';
-import { CartComponent } from './components/cart/cart.component';
+import { CartComponent } from './components/cart/cart/cart.component';
 import { OrderHistoryComponent } from './components/order/order-history/order-history.component';
 import { ProfileComponent } from './components/user/profile/profile.component';
 // import { AdminProductListComponent } from './components/admin/admin-product-list/admin-product-list.component'; // Placeholder for future
 // import { AdminOrderListComponent } from './components/admin/admin-order-list/admin-order-list.component'; // Placeholder for future
 import { CheckoutComponent } from './components/checkout/checkout.component';
-import { AuthGuard } from './services/auth/auth.guard';
-import { AdminGuard } from './services/auth/admin.guard'; // Import AdminGuard
+import { AuthGuard } from './services/auth/auth.guard.service';
+import { AdminGuard } from './services/auth/admin.guard.service'; // Import AdminGuard
 import { AdminLayoutComponent } from './components/admin/admin-layout/admin-layout.component'; // Import AdminLayout
 import { AdminDashboardComponent } from './components/admin/admin-dashboard/admin-dashboard.component'; // Import AdminDashboard
 import { AdminProductListComponent } from './components/admin/admin-product-list/admin-product-list.component'; // Add this

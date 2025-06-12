@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Order } from '../../models/order.model';
-import { AuthService } from '../auth/auth'; // For getting the token
+import { AuthService } from '../auth/auth.service'; // For getting the token
 
 @Injectable({
   providedIn: 'root'
