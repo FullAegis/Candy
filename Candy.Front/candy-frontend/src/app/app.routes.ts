@@ -13,6 +13,10 @@ import { AuthGuard } from './services/auth/auth.guard';
 import { AdminGuard } from './services/auth/admin.guard'; // Import AdminGuard
 import { AdminLayoutComponent } from './components/admin/admin-layout/admin-layout.component'; // Import AdminLayout
 import { AdminDashboardComponent } from './components/admin/admin-dashboard/admin-dashboard.component'; // Import AdminDashboard
+import { AdminProductListComponent } from './components/admin/admin-product-list/admin-product-list.component'; // Add this
+import { AdminProductFormComponent } from './components/admin/admin-product-form/admin-product-form.component'; // Add this
+import { AdminOrderListComponent } from './components/admin/admin-order-list/admin-order-list.component'; // Add this
+import { AdminOrderDetailComponent } from './components/admin/admin-order-detail/admin-order-detail.component'; // Add this
 
 
 export const routes: Routes = [
@@ -48,11 +52,11 @@ export const routes: Routes = [
     canActivate: [AdminGuard],       // Protect all child routes
     children: [
       { path: '', component: AdminDashboardComponent }, // Default admin page
-      // { path: 'products', component: AdminProductListComponent }, // To be implemented
-      // { path: 'products/new', component: AdminProductFormComponent }, // To be implemented
-      // { path: 'products/edit/:id', component: AdminProductFormComponent }, // To be implemented
-      // { path: 'orders', component: AdminOrderListComponent }, // To be implemented
-      // { path: 'orders/:id', component: AdminOrderDetailComponent } // To be implemented
+      { path: 'products', component: AdminProductListComponent }, // Add this line
+      { path: 'products/new', component: AdminProductFormComponent }, // Add this line
+      { path: 'products/edit/:id', component: AdminProductFormComponent }, // Add this line
+      { path: 'orders', component: AdminOrderListComponent }, // Add this line
+      { path: 'orders/:id', component: AdminOrderDetailComponent } // Add this line
     ]
   },
   // Catch-all or Not Found route - can be added later

@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 import { Cart, CartItem } from '../models/cart.model';
 import { Product } from '../models/product.model'; // To add a product to cart
 
-const TAX_RATE = 0.1; // Example tax rate (10%)
+const TAX_RATE = 0.21; // Example tax rate (21%)
 const CART_STORAGE_KEY = 'candyShopCart';
 
 @Injectable({

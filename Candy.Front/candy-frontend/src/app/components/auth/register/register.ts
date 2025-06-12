@@ -41,7 +41,7 @@ export class RegisterComponent {
       this.authService.register({
         username: formValue.username,
         email: formValue.email,
-        passwordHash: formValue.password, // This should be 'password' if API expects raw password for UserRegisterFormDTO
+        password: formValue.password,
         firstName: formValue.firstName,
         lastName: formValue.lastName
       }).subscribe({
