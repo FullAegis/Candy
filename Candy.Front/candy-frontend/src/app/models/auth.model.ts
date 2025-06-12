@@ -1,12 +1,12 @@
 export interface UserLogin {
   email: string;
-  passwordHash: string; // Assuming API expects passwordHash, adjust if it's 'password'
+  password: string;
 }
 
 export interface UserRegister {
   username: string;
   email: string;
-  passwordHash: string; // Assuming API expects passwordHash
+  password: string;
   firstName?: string;
   lastName?: string;
 }

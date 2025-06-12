@@ -8,8 +8,8 @@ import { CommonModule } from '@angular/common';
   selector: 'app-login',
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule, RouterModule],
-  templateUrl: './login.component.html',
-  // styleUrls: ['./login.component.css'] // Add if you have a CSS file
+  templateUrl: './login.html',
+  styleUrls: ['./login.css']
 })
 export class LoginComponent {
   loginForm: FormGroup;
@@ -32,7 +32,7 @@ export class LoginComponent {
       // This needs clarification. Assuming API takes raw password for login.
       // If API AuthController.Login expects UserLoginFormDTO with Email and Password:
       const password = this.loginForm.value.password;
-      this.authService.login({ email, passwordHash: password /* Adjust if API takes raw password */ }).subscribe({
+      this.authService.login({ email, password: password }).subscribe({
         next: () => {
           this.router.navigate(['/']); // Navigate to home or dashboard
         },

@@ -4,7 +4,7 @@ import { LoginComponent } from './components/auth/login/login.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { ProductListComponent } from './components/product/product-list/product-list.component';
 import { ProductDetailComponent } from './components/product/product-detail/product-detail.component';
-import { CartComponent } from './components/cart/cart.component';
+import { CartComponent } from './components/cart/cart/cart.component';
 import { OrderHistoryComponent } from './components/order/order-history/order-history.component';
 
 const routes: Routes = [

@@ -8,8 +8,8 @@ import { CommonModule } from '@angular/common'; // Import CommonModule
   selector: 'app-register',
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule, RouterModule], // Add CommonModule and RouterModule
-  templateUrl: './register.component.html',
-  // styleUrls: ['./register.component.css']
+  templateUrl: './register.html',
+  styleUrls: ['./register.css']
 })
 export class RegisterComponent {
   registerForm: FormGroup;
@@ -41,7 +41,7 @@ export class RegisterComponent {
       this.authService.register({
         username: formValue.username,
         email: formValue.email,
-        passwordHash: formValue.password, // This should be 'password' if API expects raw password for UserRegisterFormDTO
+        password: formValue.password,
         firstName: formValue.firstName,
         lastName: formValue.lastName
       }).subscribe({
