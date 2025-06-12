@@ -1,13 +1,13 @@
-import { Routes } from '@angular/router';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/auth/login/login.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { ProductListComponent } from './components/product/product-list/product-list.component';
 import { ProductDetailComponent } from './components/product/product-detail/product-detail.component';
 import { CartComponent } from './components/cart/cart.component';
 import { OrderHistoryComponent } from './components/order/order-history/order-history.component';
-import { ProfileComponent } from './components/user/profile/profile.component'; // AuthGuard will be created later
 
-export const routes: Routes = [
+const routes: Routes = [
   { path: '', redirectTo: '/products', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
@@ -15,5 +15,10 @@ export const routes: Routes = [
   { path: 'products/:id', component: ProductDetailComponent },
   { path: 'cart', component: CartComponent },
   { path: 'order-history', component: OrderHistoryComponent },
-  { path: 'profile', component: ProfileComponent }, // AuthGuard will be created later
 ];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
