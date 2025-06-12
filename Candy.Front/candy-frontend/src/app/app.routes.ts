@@ -5,7 +5,8 @@ import { ProductListComponent } from './components/product/product-list/product-
 import { ProductDetailComponent } from './components/product/product-detail/product-detail.component';
 import { CartComponent } from './components/cart/cart.component';
 import { OrderHistoryComponent } from './components/order/order-history/order-history.component';
-import { ProfileComponent } from './components/user/profile/profile.component'; // AuthGuard will be created later
+import { ProfileComponent } from './components/user/profile/profile.component';
+import { AuthGuard } from './services/auth/auth.guard'; // Ensure this path is correct
 
 export const routes: Routes = [
   { path: '', redirectTo: '/products', pathMatch: 'full' },
@@ -13,7 +14,20 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'products', component: ProductListComponent },
   { path: 'products/:id', component: ProductDetailComponent },
-  { path: 'cart', component: CartComponent },
-  { path: 'order-history', component: OrderHistoryComponent },
-  { path: 'profile', component: ProfileComponent }, // AuthGuard will be created later
+  {
+    path: 'cart',
+    component: CartComponent,
+    canActivate: [AuthGuard] // Added AuthGuard
+  },
+  {
+    path: 'order-history',
+    component: OrderHistoryComponent,
+    canActivate: [AuthGuard] // Added AuthGuard
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent,
+    canActivate: [AuthGuard] // Added AuthGuard
+  },
+  // Future admin routes will also use an AdminGuard here
 ];
