@@ -6,7 +6,14 @@ import { ProductDetailComponent } from './components/product/product-detail/prod
 import { CartComponent } from './components/cart/cart.component';
 import { OrderHistoryComponent } from './components/order/order-history/order-history.component';
 import { ProfileComponent } from './components/user/profile/profile.component';
-import { AuthGuard } from './services/auth/auth.guard'; // Ensure this path is correct
+// import { AdminProductListComponent } from './components/admin/admin-product-list/admin-product-list.component'; // Placeholder for future
+// import { AdminOrderListComponent } from './components/admin/admin-order-list/admin-order-list.component'; // Placeholder for future
+import { CheckoutComponent } from './components/checkout/checkout.component';
+import { AuthGuard } from './services/auth/auth.guard';
+import { AdminGuard } from './services/auth/admin.guard'; // Import AdminGuard
+import { AdminLayoutComponent } from './components/admin/admin-layout/admin-layout.component'; // Import AdminLayout
+import { AdminDashboardComponent } from './components/admin/admin-dashboard/admin-dashboard.component'; // Import AdminDashboard
+
 
 export const routes: Routes = [
   { path: '', redirectTo: '/products', pathMatch: 'full' },
@@ -27,7 +34,27 @@ export const routes: Routes = [
   {
     path: 'profile',
     component: ProfileComponent,
-    canActivate: [AuthGuard] // Added AuthGuard
+    canActivate: [AuthGuard]
   },
-  // Future admin routes will also use an AdminGuard here
+  {
+    path: 'checkout',
+    component: CheckoutComponent,
+    canActivate: [AuthGuard]
+  },
+  // Admin Routes
+  {
+    path: 'admin',
+    component: AdminLayoutComponent, // Use AdminLayoutComponent here
+    canActivate: [AdminGuard],       // Protect all child routes
+    children: [
+      { path: '', component: AdminDashboardComponent }, // Default admin page
+      // { path: 'products', component: AdminProductListComponent }, // To be implemented
+      // { path: 'products/new', component: AdminProductFormComponent }, // To be implemented
+      // { path: 'products/edit/:id', component: AdminProductFormComponent }, // To be implemented
+      // { path: 'orders', component: AdminOrderListComponent }, // To be implemented
+      // { path: 'orders/:id', component: AdminOrderDetailComponent } // To be implemented
+    ]
+  },
+  // Catch-all or Not Found route - can be added later
+  // { path: '**', component: PageNotFoundComponent },
 ];

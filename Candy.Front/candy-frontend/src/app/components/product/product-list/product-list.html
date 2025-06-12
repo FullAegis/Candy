@@ -24,8 +24,7 @@
         <h4>{{ product.name }}</h4>
       </a>
       <p class="price">{{ product.price | currency:'USD' }}</p>
-      <!-- Add to cart button will be handled later, can be a placeholder -->
-      <button class="add-to-cart-btn">Add to Cart (Placeholder)</button>
+      <button class="add-to-cart-btn" (click)="addToCart(product)">Add to Cart</button>
     </div>
   </div>
 

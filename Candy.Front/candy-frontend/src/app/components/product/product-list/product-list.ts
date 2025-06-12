@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common'; // For *ngFor, *ngIf, async pipe
 import { RouterLink } from '@angular/router'; // For routerLink
 import { ProductService } from '../../../services/product.service'; // Adjusted path
+import { CartService } from '../../../services/cart.service';
 import { Product, Category } from '../../../models/product.model'; // Adjusted path
 import { Observable, of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router'; // To read route parameters
@@ -20,7 +21,8 @@ export class ProductListComponent implements OnInit { // Renamed class
 
   constructor(
     private productService: ProductService,
-    private route: ActivatedRoute // For potential future use with route param filtering
+    private route: ActivatedRoute, // For potential future use with route param filtering
+    private cartService: CartService
   ) {}
 
   ngOnInit(): void {
@@ -53,5 +55,11 @@ export class ProductListComponent implements OnInit { // Renamed class
     }
     this.selectedCategoryId = categoryId;
     this.products$ = this.productService.getProducts(categoryId);
+  }
+
+  addToCart(product: Product): void {
+    this.cartService.addItem(product);
+    // Optionally, add some user feedback like a toast message
+    console.log(product.name + ' added to cart');
   }
 }
