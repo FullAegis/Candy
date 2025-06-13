@@ -3,12 +3,13 @@ import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http'
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Product, Category, Brand } from '../models/product.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-  private apiUrl = '/api'; // Base API URL, specific paths appended below
+  private baseApiProductPath = environment.apiBaseUrl + environment.apiPath;
 
   constructor(private http: HttpClient) { }
 
@@ -30,7 +31,7 @@ export class ProductService {
       params = params.set('categoryId', categoryId);
     }
     // Assuming endpoint is /api/Candies from Candy.API/Controllers/Products/CandiesController.cs
-    return this.http.get<Product[]>(`${this.apiUrl}/Candies`, { params }).pipe(
+    return this.http.get<Product[]>(`${this.baseApiProductPath}/Candies`, { params }).pipe(
       catchError(this.handleError)
     );
   }
@@ -38,7 +39,7 @@ export class ProductService {
   // Fetch a single product by its ID
   getProductById(id: string): Observable<Product> {
     // Assuming endpoint is /api/Candies/{id}
-    return this.http.get<Product>(`${this.apiUrl}/Candies/${id}`).pipe(
+    return this.http.get<Product>(`${this.baseApiProductPath}/Candies/${id}`).pipe(
       catchError(this.handleError)
     );
   }
@@ -46,7 +47,7 @@ export class ProductService {
   // Fetch all product categories
   getCategories(): Observable<Category[]> {
     // Assuming endpoint is /api/Categories from Candy.API/Controllers/Products/CategoriesController.cs
-    return this.http.get<Category[]>(`${this.apiUrl}/Categories`).pipe(
+    return this.http.get<Category[]>(`${this.baseApiProductPath}/Categories`).pipe(
       catchError(this.handleError)
     );
   }
@@ -54,7 +55,7 @@ export class ProductService {
   // Fetch all product brands
   getBrands(): Observable<Brand[]> {
     // Assuming endpoint is /api/Brands from Candy.API/Controllers/Products/BrandsController.cs
-    return this.http.get<Brand[]>(`${this.apiUrl}/Brands`).pipe(
+    return this.http.get<Brand[]>(`${this.baseApiProductPath}/Brands`).pipe(
       catchError(this.handleError)
     );
   }

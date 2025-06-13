@@ -5,13 +5,14 @@ import { catchError } from 'rxjs/operators';
 import { Order, OrderItem } from '../models/order.model'; // Assuming OrderItem might be part of placeOrder payload
 import { Cart } from '../models/cart.model'; // Needed for placeOrder
 import { AuthService } from './auth/auth.service'; // For getting the token
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderService {
   // Assuming API base from Candy.API/Controllers/Orders/OrdersController.cs is /api/Orders
-  private apiUrl = '/api/Orders';
+  private baseUrl = environment.apiBaseUrl + environment.apiPath + '/Orders';
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
@@ -59,7 +60,7 @@ export class OrderService {
       // shippingAddress, billingAddress, etc. would be added here if collected
     };
 
-    return this.http.post<Order>(this.apiUrl, orderPayload, { headers }).pipe(
+    return this.http.post<Order>(this.baseUrl, orderPayload, { headers }).pipe(
       catchError(this.handleError)
     );
   }
@@ -71,7 +72,7 @@ export class OrderService {
       return of([]); // Or throwError
     }
     // Assuming GET /api/Orders returns orders for the authenticated user
-    return this.http.get<Order[]>(this.apiUrl, { headers }).pipe(
+    return this.http.get<Order[]>(this.baseUrl, { headers }).pipe(
       catchError(this.handleError)
     );
   }
@@ -82,7 +83,7 @@ export class OrderService {
     if (!headers) {
       return of(null); // Or throwError
     }
-    return this.http.get<Order>(`${this.apiUrl}/${id}`, { headers }).pipe(
+    return this.http.get<Order>(`${this.baseUrl}/${id}`, { headers }).pipe(
       catchError(this.handleError)
     );
   }

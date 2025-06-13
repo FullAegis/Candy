@@ -18,10 +18,10 @@ const commonEngine = new CommonEngine();
  *
  * Example:
  * ```ts
- * app.get('/api/**', (req, res) => {
- *   // Handle API request
- * });
- * ```
+ */ app.get('/api/**', (req, res) => {
+
+ });
+ /* ```
  */
 
 /**

@@ -97,15 +97,13 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     };
   });
 
-services.AddCors(static options => {
-  Action<CorsPolicyBuilder> kAngularPolicy = static (builder)
+services.AddCors(options
+  => options.AddPolicy("AllowSpecificOrigin", builder
     => builder.WithOrigins("http://localhost:4200")
               .AllowAnyHeader()
               .AllowAnyMethod()
-              ;
-
-  options.AddPolicy("AllowAngularFrontendOrigin", kAngularPolicy);
-});
+  )
+);
 
 var app = builder.Build();
 
@@ -116,7 +114,7 @@ if (app.Environment.IsDevelopment()) {
 
 app.UseHttpsRedirection();
 
-app.UseCors();
+app.UseCors("AllowSpecificOrigin");
 
 app.UseAuthentication();
 app.UseAuthorization();

@@ -2,24 +2,25 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, tap, catchError } from 'rxjs';
 import { UserLogin, UserRegister, AuthResponse } from '../../models/auth.model'; // Models to be created
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = '/Auth'; // Replace with your actual API base URL if different
+  private baseUrl = environment.apiBaseUrl + environment.authPath;
 
   constructor(private http: HttpClient) { }
 
   login(credentials: UserLogin): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/Login`, credentials).pipe(
+    return this.http.post<AuthResponse>(`${this.baseUrl}/Login`, credentials).pipe(
       tap(response => this.storeToken(response.token)),
       catchError(this.handleError)
     );
   }
 
   register(userInfo: UserRegister): Observable<any> {
-    return this.http.post(`${this.apiUrl}/Register`, userInfo).pipe(
+    return this.http.post(`${this.baseUrl}/Register`, userInfo).pipe(
       catchError(this.handleError)
     );
   }
